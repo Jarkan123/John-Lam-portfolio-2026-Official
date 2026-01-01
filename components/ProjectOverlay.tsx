@@ -1,14 +1,15 @@
 
 import React, { useEffect } from 'react';
-import type { Project } from '../types';
+import type { Project, GalleryImage } from '../types';
 import Icon from './Icon';
 
 interface ProjectOverlayProps {
     project: Project | null;
     onClose: () => void;
+    onOpenLightbox: (images: GalleryImage[], startIndex: number) => void;
 }
 
-const ProjectOverlay: React.FC<ProjectOverlayProps> = ({ project, onClose }) => {
+const ProjectOverlay: React.FC<ProjectOverlayProps> = ({ project, onClose, onOpenLightbox }) => {
     useEffect(() => {
         if (project) {
             // Need to re-run lucide when content changes
@@ -22,9 +23,11 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({ project, onClose }) => 
             </div>
         );
     }
+    
+    const gallery = project?.gallery || [];
 
     return (
-        <div id="project-overlay" className={`fixed inset-0 bg-white dark:bg-dark-900 z-[80] transition-transform duration-700 ease-custom overflow-y-auto ${project ? 'translate-y-0' : 'translate-y-full'}`}>
+        <div id="project-overlay" className={`fixed inset-0 bg-white dark:bg-dark-900 z-[80] transition-transform duration-700 ease-custom ${project ? 'translate-y-0' : 'translate-y-full'} overflow-y-auto`}>
             <button onClick={onClose} className="fixed top-6 right-6 z-[90] w-10 h-10 bg-black/5 dark:bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
                 <Icon name="x" className="w-4 h-4" />
             </button>
@@ -50,9 +53,18 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({ project, onClose }) => 
                             <span className="block text-[10px] uppercase tracking-widest opacity-50 mb-2">Year</span>
                             <span className="text-lg font-display">{project.year}</span>
                         </div>
-                        <button className="w-full py-4 bg-black dark:bg-white text-white dark:text-black uppercase tracking-widest text-xs font-medium hover:opacity-80 transition-opacity">
-                            Visit Live Site
-                        </button>
+                        <div className="border-t border-black/10 dark:border-white/10 pt-4 space-y-4">
+                            {project.liveSiteUrl && (
+                                <a href={project.liveSiteUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-full py-4 bg-black dark:bg-white text-white dark:text-black uppercase tracking-widest text-xs font-medium hover:opacity-80 transition-opacity">
+                                    Visit Live Site
+                                </a>
+                            )}
+                             {project.socialMediaUrl && (
+                                <a href={project.socialMediaUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-full py-4 bg-blue-600 text-white uppercase tracking-widest text-xs font-medium hover:opacity-80 transition-opacity">
+                                    Visit Social Media
+                                </a>
+                            )}
+                        </div>
                     </div>
                     
                     <div className="md:col-span-8">
@@ -61,15 +73,28 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({ project, onClose }) => 
                             {project.desc}
                         </p>
                         
-                        <div className="space-y-8">
-                            <div className="bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden border border-black/5 dark:border-white/5">
-                                <img src={project.detailImg} className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700" alt="Detail"/>
+                        {gallery.length > 0 ? (
+                            <div className="grid grid-cols-2 gap-4">
+                                {gallery.map((image, index) => (
+                                    <div key={index} onClick={() => onOpenLightbox(gallery, index)} className="relative aspect-video bg-cover bg-center rounded-lg overflow-hidden cursor-pointer group border border-black/5 dark:border-white/5">
+                                        <img src={image.imageUrl} alt={`Gallery image ${index + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                                            <Icon name="zoom-in" className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        </div>
+                        ) : project.detailImg && (
+                             <div className="space-y-8">
+                                <div className="bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden border border-black/5 dark:border-white/5">
+                                    <img src={project.detailImg} className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700" alt="Detail"/>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                <div className="border-t border-black/5 dark:border-white/5 py-24 text-center bg-white dark:bg-dark-800 text-black dark:text-white">
+                <div className="border-t border-black/5 dark:border-white/5 py-24 text-center bg-light-100 dark:bg-dark-800 text-black dark:text-white">
                     <button onClick={onClose} className="group inline-flex flex-col items-center gap-4">
                         <span className="text-[10px] uppercase tracking-widest opacity-40">Back to Index</span>
                         <span className="font-display text-4xl uppercase tracking-tighter group-hover:opacity-50 transition-opacity">Close Project</span>

@@ -2,16 +2,46 @@
 import type { Project, ProjectKey } from './types';
 
 export const PROJECTS: Record<ProjectKey, Project> = {
-    nova: {
-        key: "nova",
-        title: "Nova Finance",
-        cat: "Fintech SaaS",
+    o2h2o: {
+        key: "o2h2o",
+        title: "O2H2O",
+        cat: "Yacht & Jet Brand",
+        year: "2025",
+        desc: "A comprehensive go-to-market strategy for the luxury brand O2H2O. We orchestrated a full-stack marketing launch encompassing a new website, branding, high-profile events, and automated sales funnels to capture and nurture an exclusive clientele for their yacht and private jet offerings.",
+        tags: ["Fullstack marketing", "website", "Branding", "Design", "Event", "Social media Management", "Meta ads", "Partnership", "Sales Funnel", "CRM & Automation", "Dashboard"],
+        coverImg: "https://www.simpsonmarine.com/wp-content/uploads/2024/07/%C2%A9Guillaume-Plisson-for-Sanlorenzo-08102021L1020496LR-800x534.png",
+        heroImg: "https://bombardier.com/sites/default/files/styles/retina_2700x900/public/2024-10/16A0029_2024_V2-copy-Global-8000-2085x932.jpg.webp?itok=cnBsGzgO",
+        liveSiteUrl: "https://www.o2xh2o.com/",
+        socialMediaUrl: "https://www.facebook.com/O2H2O.Vietnam/",
+        gallery: [
+            {
+                imageUrl: "https://images.unsplash.com/photo-15634045548-912355483b8b?q=80&w=1600&auto=format&fit=crop",
+                description: "The official launch event brought together industry leaders and prospective clients for an unforgettable evening, showcasing the brand's commitment to luxury and excellence."
+            },
+            {
+                imageUrl: "https://images.unsplash.com/photo-1620428268482-cf1851a36764?q=80&w=1600&auto=format&fit=crop",
+                description: "We developed a cohesive and elegant brand identity, including logo design, color palette, and typography, to reflect the premium nature of the Yacht & Jet services."
+            },
+            {
+                imageUrl: "https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=1600&auto=format&fit=crop",
+                description: "A state-of-the-art website and CRM system were implemented to provide a seamless user experience and automate the sales funnel, from initial inquiry to final purchase."
+            },
+            {
+                imageUrl: "https://images.unsplash.com/photo-1557838923-2985c318be48?q=80&w=1600&auto=format&fit=crop",
+                description: "Targeted social media campaigns and strategic partnerships amplified brand reach, driving significant engagement and generating high-quality leads."
+            }
+        ]
+    },
+    bysassy: {
+        key: "bysassy",
+        title: "Bysassy",
+        cat: "Luxury Blog Website",
         year: "2024",
-        desc: "A high-frequency trading dashboard redesign focusing on data density and legibility in dark environments. We utilized WebSockets for real-time updates without layout shifts.",
-        tags: ["React", "D3.js", "WebSockets"],
-        coverImg: "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/917d6f93-fb36-439a-8c48-884b67b35381_1600w.jpg",
-        heroImg: "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/4734259a-bad7-422f-981e-ce01e79184f2_1600w.jpg",
-        detailImg: "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/c543a9e1-f226-4ced-80b0-feb8445a75b9_1600w.jpg"
+        desc: "A bespoke digital editorial platform for Bysassy, a premier luxury lifestyle blog. We designed and developed a content-first website that emphasizes immersive storytelling, elegant typography, and a seamless reading experience to captivate a high-net-worth audience.",
+        tags: ["Branding", "UI/UX Design", "Wordpress", "Content Strategy", "SEO"],
+        coverImg: "https://asset.bucherer.com/image/upload/v1741793446/Marketing%20Content/Campaigns/CPO/Imagery/2025-CPO-AP-OriginalSize-StillLife-2.jpg",
+        heroImg: "https://images.unsplash.com/photo-1617886903352-258e245b99ce?q=80&w=1600&auto=format&fit=crop",
+        detailImg: "https://images.unsplash.com/photo-1590001905470-333441541099?q=80&w=1600&auto=format&fit=crop"
     },
     lumina: {
         key: "lumina",

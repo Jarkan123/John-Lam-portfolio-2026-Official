@@ -13,19 +13,21 @@ import type { ProjectKey } from '../types';
 interface HomeProps {
     onOpenProject: (key: ProjectKey) => void;
     onNavigate: (path: string) => void;
+    isLoading: boolean;
+    onOpenDiscoveryModal: () => void;
 }
 
-const Home: React.FC<HomeProps> = ({ onOpenProject, onNavigate }) => {
+const Home: React.FC<HomeProps> = ({ onOpenProject, onNavigate, isLoading, onOpenDiscoveryModal }) => {
     return (
         <main className="w-full max-w-[1920px] mx-auto border-x border-black/5 dark:border-white/5 bg-white dark:bg-dark-900 transition-colors duration-500">
-            <Hero />
+            <Hero isLoading={isLoading} />
             <Marquee />
             <Work onOpenProject={onOpenProject} onNavigate={onNavigate} />
             <Brands />
             <Testimonials />
             <Services />
             <Belief />
-            <Contact />
+            <Contact onOpenDiscoveryModal={onOpenDiscoveryModal} />
         </main>
     );
 };

@@ -5,7 +5,7 @@ const Belief: React.FC = () => {
     const beliefRef = useRef<HTMLDivElement>(null);
     const [scrollProgress, setScrollProgress] = useState(0);
     
-    const text = "We believe that code is the new concrete. In a world of infinite noise, clarity is the only currency that matters. We strip away the non-essential to reveal the core truth of your brand.";
+    const text = "I believe most marketing fails because it moves too slow and costs too much. Build lean. Deploy fast. Adjust until it works.";
     const words = text.split(' ');
 
     useEffect(() => {

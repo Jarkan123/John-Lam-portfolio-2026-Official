@@ -27,7 +27,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <div className="flex flex-col gap-2">
                     <span className="text-[10px] uppercase tracking-widest opacity-50">John Lam</span>
                     <p className="text-sm max-w-xs opacity-70">
-                        A creative developer building the interfaces of tomorrow.
+                        A digital growth marketer building the systems of tomorrow.
                     </p>
                 </div>
                 <div className="flex flex-col gap-3 text-right">

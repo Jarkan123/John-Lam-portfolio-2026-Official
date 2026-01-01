@@ -2,21 +2,47 @@
 import React, { useState } from 'react';
 import Icon from './Icon';
 
-const Contact: React.FC = () => {
+interface ContactProps {
+    onOpenDiscoveryModal: () => void;
+}
+
+const Contact: React.FC<ContactProps> = ({ onOpenDiscoveryModal }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
-        setTimeout(() => {
+        setError('');
+    
+        const form = e.target as HTMLFormElement;
+        const formData = new FormData(form);
+    
+        try {
+            const response = await fetch("https://formspree.io/f/mbdllvre", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+    
+            if (response.ok) {
+                setIsSuccess(true);
+            } else {
+                setError('There was an error submitting your message. Please try again.');
+            }
+        } catch (error) {
+            setError('An error occurred. Please check your connection and try again.');
+        } finally {
             setIsSubmitting(false);
-            setIsSuccess(true);
-        }, 1500);
+        }
     };
 
     const resetForm = () => {
         setIsSuccess(false);
+        setError('');
         // This is a bit of a hack to reset form without controlled components, good enough for this case
         const form = document.getElementById('contact-form') as HTMLFormElement;
         form?.reset();
@@ -39,7 +65,7 @@ const Contact: React.FC = () => {
                             <Icon name="mail" className="w-4 h-4" />
                             <span className="underline decoration-1 underline-offset-4 decoration-black/20 dark:decoration-white/20">minhlam14052001@gmail.com</span>
                         </a>
-                        <button data-cal-link="codecreststudio" data-cal-config='{"layout":"month_view"}' className="text-lg hover:text-emerald-500 transition-colors flex items-center gap-3 w-fit text-black dark:text-white">
+                        <button onClick={onOpenDiscoveryModal} className="text-lg hover:text-emerald-500 transition-colors flex items-center gap-3 w-fit text-black dark:text-white">
                             <Icon name="calendar" className="w-4 h-4" />
                             <span className="underline decoration-1 underline-offset-4 decoration-black/20 dark:decoration-white/20">Book a discovery call</span>
                         </button>
@@ -62,6 +88,9 @@ const Contact: React.FC = () => {
                             <input type="text" name="message" id="message" className="block py-2.5 px-0 w-full text-lg bg-transparent border-0 border-b border-black/20 dark:border-white/20 appearance-none text-black dark:text-white focus:outline-none focus:ring-0 focus:border-black dark:focus:border-white peer font-light" placeholder=" " required />
                             <label htmlFor="message" className="peer-focus:font-medium absolute text-lg text-black/40 dark:text-white/40 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-black dark:peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Project Details</label>
                         </div>
+                        
+                        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+                        
                         <button type="submit" id="submit-btn" disabled={isSubmitting} className="group mt-8 inline-flex items-center gap-4 py-3 pr-6 text-sm uppercase tracking-widest font-medium border-b border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white transition-all text-black dark:text-white disabled:opacity-50 disabled:pointer-events-none">
                             <span id="btn-text">{isSubmitting ? 'Sending...' : 'Send Inquiry'}</span>
                             <Icon name="arrow-right" className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />

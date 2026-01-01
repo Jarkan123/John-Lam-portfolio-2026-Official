@@ -9,8 +9,10 @@ import Intro from './components/Intro';
 import Home from './pages/Home';
 import Archive from './pages/Archive';
 import Admin from './pages/Admin';
+import DiscoveryCallModal from './components/DiscoveryCallModal';
+import Lightbox from './components/Lightbox';
 
-import type { ProjectKey } from './types';
+import type { ProjectKey, GalleryImage } from './types';
 import { useProjects } from './hooks/useProjects';
 
 // Declare lucide on the window object
@@ -27,6 +29,8 @@ const App: React.FC = () => {
     const [activeProject, setActiveProject] = useState<ProjectKey | null>(null);
     const [toastMessage, setToastMessage] = useState('');
     const [currentPath, setCurrentPath] = useState(window.location.pathname);
+    const [isDiscoveryModalOpen, setIsDiscoveryModalOpen] = useState(false);
+    const [lightboxState, setLightboxState] = useState<{ images: GalleryImage[], index: number } | null>(null);
     
     const { projects } = useProjects();
 
@@ -67,12 +71,12 @@ const App: React.FC = () => {
     });
 
     useEffect(() => {
-        if (activeProject) {
+        if (activeProject || isDiscoveryModalOpen || lightboxState) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = '';
         }
-    }, [activeProject]);
+    }, [activeProject, isDiscoveryModalOpen, lightboxState]);
 
     const toggleTheme = useCallback(() => {
         setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
@@ -91,6 +95,14 @@ const App: React.FC = () => {
     const closeProject = useCallback(() => {
         setActiveProject(null);
     }, []);
+
+    const openDiscoveryModal = useCallback(() => setIsDiscoveryModalOpen(true), []);
+    const closeDiscoveryModal = useCallback(() => setIsDiscoveryModalOpen(false), []);
+
+    const openLightbox = useCallback((images: GalleryImage[], index: number) => {
+        setLightboxState({ images, index });
+    }, []);
+    const closeLightbox = useCallback(() => setLightboxState(null), []);
     
     const navigate = (path: string) => {
         window.history.pushState({}, '', path);
@@ -106,7 +118,7 @@ const App: React.FC = () => {
                 return <Archive projects={projects} onOpenProject={openProject} />;
             case '/':
             default:
-                return <Home onOpenProject={openProject} onNavigate={navigate} />;
+                return <Home onOpenProject={openProject} onNavigate={navigate} isLoading={isLoading} onOpenDiscoveryModal={openDiscoveryModal} />;
         }
     };
 
@@ -117,12 +129,21 @@ const App: React.FC = () => {
                 <NoiseOverlay />
                 <Toast message={toastMessage} />
                 <Header onToggleTheme={toggleTheme} theme={theme} onNavigate={navigate} />
-                <ProjectOverlay project={activeProject ? projects[activeProject] : null} onClose={closeProject} />
+                <ProjectOverlay project={activeProject ? projects[activeProject] : null} onClose={closeProject} onOpenLightbox={openLightbox} />
+                <DiscoveryCallModal isOpen={isDiscoveryModalOpen} onClose={closeDiscoveryModal} />
 
                 {renderPage()}
 
                 <Footer onNavigate={navigate} />
             </div>
+
+            {lightboxState && (
+                <Lightbox 
+                    images={lightboxState.images} 
+                    startIndex={lightboxState.index} 
+                    onClose={closeLightbox} 
+                />
+            )}
         </>
     );
 };

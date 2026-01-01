@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useProjects } from '../../hooks/useProjects';
 import type { Project, ProjectKey } from '../../types';
@@ -97,7 +96,8 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
 
             <div className="bg-white dark:bg-dark-900 shadow overflow-hidden sm:rounded-lg border border-black/5 dark:border-white/5">
                 <ul className="divide-y divide-gray-200 dark:divide-gray-800">
-                    {Object.values(projects).map((project) => (
+                    {/* FIX: Explicitly type `project` to `Project` to resolve TypeScript error where it was inferred as `unknown`. */}
+                    {Object.values(projects).map((project: Project) => (
                         <li key={project.key} className="px-6 py-4 flex items-center justify-between">
                             <div>
                                 <p className="text-sm font-medium text-black dark:text-white">{project.title}</p>

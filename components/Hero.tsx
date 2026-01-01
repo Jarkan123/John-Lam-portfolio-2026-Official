@@ -27,8 +27,11 @@ const AnimatedWord: React.FC<{ text: string; baseDelay: number; isHighlighted?: 
     );
 };
 
+interface HeroProps {
+    isLoading: boolean;
+}
 
-const Hero: React.FC = () => {
+const Hero: React.FC<HeroProps> = ({ isLoading }) => {
     const line1 = [
         { text: 'I', highlight: false },
         { text: "don't", highlight: false },
@@ -50,7 +53,7 @@ const Hero: React.FC = () => {
     return (
         <header className="min-h-screen flex flex-col justify-between px-6 md:px-12 pt-32 pb-12 relative overflow-hidden">
             <div className="relative z-10">
-                <h1 className="font-display text-[13vw] md:text-[8.5vw] leading-[1.1] tracking-tighter uppercase font-medium select-none text-black dark:text-white">
+                <h1 key={isLoading ? 'loading' : 'loaded'} className="font-display text-[13vw] md:text-[8.5vw] leading-[1.1] tracking-tighter uppercase font-medium select-none text-black dark:text-white">
                     <span className="block">
                         {line1.map((word, index) => {
                             const baseDelay = runningDelay;

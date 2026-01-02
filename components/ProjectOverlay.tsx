@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import type { Project, GalleryImage } from '../types';
 import Icon from './Icon';
 
@@ -10,12 +10,48 @@ interface ProjectOverlayProps {
 }
 
 const ProjectOverlay: React.FC<ProjectOverlayProps> = ({ project, onClose, onOpenLightbox }) => {
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(false);
+
+    const checkForScrollability = useCallback(() => {
+        const el = scrollContainerRef.current;
+        if (el) {
+            const hasOverflow = el.scrollWidth > el.clientWidth;
+            setCanScrollLeft(el.scrollLeft > 0);
+            setCanScrollRight(hasOverflow && el.scrollLeft < el.scrollWidth - el.clientWidth - 1);
+        }
+    }, []);
+
     useEffect(() => {
         if (project) {
             // Need to re-run lucide when content changes
             setTimeout(() => window.lucide?.createIcons({ attrs: { 'stroke-width': 1.5 } }), 100);
+            
+            const el = scrollContainerRef.current;
+            if (el) {
+                // Check scrollability shortly after content is rendered
+                setTimeout(checkForScrollability, 100);
+                el.addEventListener('scroll', checkForScrollability, { passive: true });
+                window.addEventListener('resize', checkForScrollability);
+                return () => {
+                    el.removeEventListener('scroll', checkForScrollability);
+                    window.removeEventListener('resize', checkForScrollability);
+                };
+            }
         }
-    }, [project]);
+    }, [project, checkForScrollability]);
+
+    const scroll = (direction: 'left' | 'right') => {
+        const el = scrollContainerRef.current;
+        if (el) {
+            const scrollAmount = el.clientWidth * 0.8;
+            el.scrollBy({
+                left: direction === 'left' ? -scrollAmount : scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    };
     
     if (!project) {
         return (
@@ -74,15 +110,30 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({ project, onClose, onOpe
                         </p>
                         
                         {gallery.length > 0 ? (
-                            <div className="grid grid-cols-2 gap-4">
-                                {gallery.map((image, index) => (
-                                    <div key={index} onClick={() => onOpenLightbox(gallery, index)} className="relative aspect-video bg-cover bg-center rounded-lg overflow-hidden cursor-pointer group border border-black/5 dark:border-white/5">
-                                        <img src={image.imageUrl} alt={`Gallery image ${index + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                                            <Icon name="zoom-in" className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                                        </div>
+                            <div>
+                                <div className="flex justify-between items-center mb-6">
+                                    <h3 className="font-display text-2xl uppercase tracking-tight">Gallery</h3>
+                                    <div className="flex items-center gap-4">
+                                        <button onClick={() => scroll('left')} disabled={!canScrollLeft} className="w-10 h-10 flex items-center justify-center rounded-full border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                                            <Icon name="arrow-left" className="w-4 h-4" />
+                                        </button>
+                                        <button onClick={() => scroll('right')} disabled={!canScrollRight} className="w-10 h-10 flex items-center justify-center rounded-full border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                                            <Icon name="arrow-right" className="w-4 h-4" />
+                                        </button>
                                     </div>
-                                ))}
+                                </div>
+                                <div ref={scrollContainerRef} className="flex overflow-x-auto gap-4 pb-4 hide-scrollbar">
+                                    {gallery.map((image, index) => (
+                                        <div key={index} className="flex-shrink-0 w-[85%] md:w-[48%] aspect-video">
+                                            <div onClick={() => onOpenLightbox(gallery, index)} className="relative h-full w-full bg-cover bg-center rounded-lg overflow-hidden cursor-pointer group border border-black/5 dark:border-white/5">
+                                                <img src={image.imageUrl} alt={`Gallery image ${index + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                                                    <Icon name="zoom-in" className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         ) : project.detailImg && (
                              <div className="space-y-8">

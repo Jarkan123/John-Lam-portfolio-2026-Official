@@ -50,17 +50,15 @@ const Lightbox: React.FC<LightboxProps> = ({ images, startIndex, onClose }) => {
         >
             <div className="relative w-full h-full flex items-center justify-center" onClick={e => e.stopPropagation()}>
                 {/* Main Content: Keyed to re-trigger animation on change */}
-                <div key={currentIndex} className="relative w-full max-w-5xl animate-fade-in" style={{ animationDuration: '0.3s' }}>
-                    <div className="aspect-video w-full bg-black/20 rounded-lg overflow-hidden shadow-2xl flex items-center justify-center">
-                        <img 
-                            src={image.imageUrl} 
-                            alt={image.description} 
-                            className="max-w-full max-h-[75vh] object-contain"
-                        />
-                    </div>
-                    <div className="text-center mt-4 text-white/80 max-w-3xl mx-auto">
-                        <p>{image.description}</p>
-                    </div>
+                <div key={currentIndex} className="relative w-full max-w-7xl animate-fade-in text-center" style={{ animationDuration: '0.3s' }}>
+                    <img 
+                        src={image.imageUrl} 
+                        alt={image.description || 'Gallery image'} 
+                        className="max-w-full max-h-[85vh] object-contain inline-block align-middle rounded-lg shadow-2xl"
+                    />
+                    {image.description && (
+                        <p className="mt-4 text-white/90 text-sm md:text-base leading-relaxed max-w-3xl mx-auto">{image.description}</p>
+                    )}
                 </div>
 
                 {/* Controls */}
@@ -75,7 +73,7 @@ const Lightbox: React.FC<LightboxProps> = ({ images, startIndex, onClose }) => {
                 <button 
                     onClick={goToPrev} 
                     disabled={currentIndex === 0}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-opacity w-12 h-12 flex items-center justify-center bg-black/20 rounded-full disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-opacity w-12 h-12 flex items-center justify-center bg-black/20 rounded-full disabled:opacity-30 disabled:cursor-not-allowed"
                     aria-label="Previous image"
                 >
                     <Icon name="chevron-left" className="w-8 h-8" />
@@ -84,7 +82,7 @@ const Lightbox: React.FC<LightboxProps> = ({ images, startIndex, onClose }) => {
                 <button 
                     onClick={goToNext} 
                     disabled={currentIndex === images.length - 1}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-opacity w-12 h-12 flex items-center justify-center bg-black/20 rounded-full disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-opacity w-12 h-12 flex items-center justify-center bg-black/20 rounded-full disabled:opacity-30 disabled:cursor-not-allowed"
                     aria-label="Next image"
                 >
                     <Icon name="chevron-right" className="w-8 h-8" />

@@ -8,10 +8,7 @@ interface DashboardProps {
 }
 
 const ProjectForm: React.FC<{ project?: Project; onSave: (project: Project) => void; onCancel: () => void; }> = ({ project, onSave, onCancel }) => {
-    // FIX: The initial state for a new project is not a valid `Project`.
-    // The explicit `useState<Project>` is too restrictive.
-    // By removing it, we allow the state to be inferred, accommodating the initial empty form state.
-    const [formData, setFormData] = useState(project || {
+    const [formData, setFormData] = useState<Project>(project || {
         key: '', title: '', cat: '', year: '', desc: '', tags: [], coverImg: '', heroImg: '', detailImg: ''
     });
     const isEditing = !!project;
@@ -27,9 +24,7 @@ const ProjectForm: React.FC<{ project?: Project; onSave: (project: Project) => v
     
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // FIX: Assert formData as Project on submit, as we expect a complete project object
-        // from the form at this point.
-        onSave(formData as Project);
+        onSave(formData);
     };
 
     return (
@@ -96,7 +91,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
 
             <div className="bg-white dark:bg-dark-900 shadow overflow-hidden sm:rounded-lg border border-black/5 dark:border-white/5">
                 <ul className="divide-y divide-gray-200 dark:divide-gray-800">
-                    {/* FIX: Explicitly type `project` to `Project` to resolve TypeScript error where it was inferred as `unknown`. */}
+                    {/* FIX: Add type annotation to 'project' to resolve type inference issues with Object.values() */}
                     {Object.values(projects).map((project: Project) => (
                         <li key={project.key} className="px-6 py-4 flex items-center justify-between">
                             <div>

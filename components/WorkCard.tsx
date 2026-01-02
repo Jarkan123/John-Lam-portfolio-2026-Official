@@ -56,6 +56,7 @@ const WorkCard: React.FC<WorkCardProps> = ({ project, onClick, className = '' })
                 <img
                     ref={imgRef}
                     src={project.coverImg}
+                    loading="lazy"
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-transform duration-1000 ease-custom"
                     alt={project.title}
                 />

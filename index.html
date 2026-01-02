@@ -84,6 +84,10 @@
         ::-webkit-scrollbar-thumb:hover { background: #999; }
         .dark ::-webkit-scrollbar-thumb:hover { background: #555; }
 
+        /* Hide Scrollbar Utility */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         /* Animations */
         @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
         .animate-marquee { display: inline-flex; animation: marquee 40s linear infinite; }
@@ -95,6 +99,11 @@
             animation: reveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
         }
         @keyframes reveal { to { transform: translateY(0); } }
+
+        @keyframes scale-in {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
 
         /* Floating Animation */
         @keyframes float {

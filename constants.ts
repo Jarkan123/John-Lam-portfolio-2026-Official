@@ -15,20 +15,32 @@ export const PROJECTS: Record<ProjectKey, Project> = {
         socialMediaUrl: "https://www.facebook.com/O2H2O.Vietnam/",
         gallery: [
             {
-                imageUrl: "https://images.unsplash.com/photo-15634045548-912355483b8b?q=80&w=1600&auto=format&fit=crop",
-                description: "The official launch event brought together industry leaders and prospective clients for an unforgettable evening, showcasing the brand's commitment to luxury and excellence."
+                imageUrl: "https://i.ibb.co/JjdsyRGY/Case-Study-O2-H2-O.png",
+                description: "I began by building a complete go-to-market and communication plan for O2H2O — defining the audience journey, brand voice, brand identity & image, sales plan, and success metrics before any execution."
             },
             {
-                imageUrl: "https://images.unsplash.com/photo-1620428268482-cf1851a36764?q=80&w=1600&auto=format&fit=crop",
-                description: "We developed a cohesive and elegant brand identity, including logo design, color palette, and typography, to reflect the premium nature of the Yacht & Jet services."
+                imageUrl: "https://i.ibb.co/0R8H5bYr/Case-Study-O2-H2-O-1.png",
+                description: "Next, we built the website as the central place to present the products, build digital authority, and convert interest into inquiries — supported by an SEO- and GEO-ready structure and a clear sales funnel."
             },
             {
-                imageUrl: "https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=1600&auto=format&fit=crop",
-                description: "A state-of-the-art website and CRM system were implemented to provide a seamless user experience and automate the sales funnel, from initial inquiry to final purchase."
+                imageUrl: "https://i.ibb.co/qZQdqsQ/Case-Study-O2-H2-O-4.png",
+                description: "We focused on building core social channels across Facebook, Instagram, and TikTok, using targeted, high-impact content to drive traffic, increase awareness, and speak directly to the ultra-luxury audience. We create many viral content, growing the our fanpage to 27k follower in 1 year."
             },
             {
-                imageUrl: "https://images.unsplash.com/photo-1557838923-2985c318be48?q=80&w=1600&auto=format&fit=crop",
-                description: "Targeted social media campaigns and strategic partnerships amplified brand reach, driving significant engagement and generating high-quality leads."
+                imageUrl: "https://i.ibb.co/tTB34vLq/Case-study-O2-performance.png",
+                description: "With demand signals in place, we shifted into performance mode — retargeting high-intent audiences, optimizing landing pages, and doubling down on what converted while removing what didn’t."
+            },
+            {
+                imageUrl: "https://i.ibb.co/YTQ5sV1T/Case-Study-O2-H2-O-3.png",
+                description: "Digital momentum was reinforced through curated offline activations with premium partnership. I work with big brand like Roll Royce & Taitinger Champange to host wine tasting & luxury perfurm workshop to convert & cross sale customers."
+            },
+            {
+                imageUrl: "https://i.ibb.co/5710Z3k/Case-Study-O2-H2-O-5.png",
+                description: "A CRM and automation system was also built using Mailchimp and Zaiper to nurture charter clients, manage post-purchase relationships, and open pathways toward yacht and jet acquisition."
+            },
+            {
+                imageUrl: "https://i.ibb.co/HL3Xhyj4/Case-Study-O2-H2-O-6.png",
+                description: "All channels were connected into a live reporting dashboard builty with looker studio, giving clear visibility across marketing, sales, and customer lifecycle performance. You can view a demo version of the dashboard here : https://lookerstudio.google.com/reporting/712a45dc-564a-41da-b156-8cc9914ae126"
             }
         ]
     },
@@ -37,11 +49,22 @@ export const PROJECTS: Record<ProjectKey, Project> = {
         title: "Bysassy",
         cat: "Luxury Blog Website",
         year: "2024",
-        desc: "A bespoke digital editorial platform for Bysassy, a premier luxury lifestyle blog. We designed and developed a content-first website that emphasizes immersive storytelling, elegant typography, and a seamless reading experience to captivate a high-net-worth audience.",
-        tags: ["Branding", "UI/UX Design", "Wordpress", "Content Strategy", "SEO"],
+        desc: "A high-end editorial website built for Bysassy, designed to present luxury real estate, fine watchmaking (Audemars Piguet), and luxury travel through a clear, content-first experience. The platform focuses on readability, strong visual hierarchy, and effortless navigation, allowing long-form stories to unfold naturally and encouraging deeper engagement from a discerning audience. The website also serves as a flexible editorial system, making it easy to publish and manage premium content while reinforcing Bysassy’s position as a trusted voice in the luxury lifestyle space.",
+        tags: ["Website Development"],
         coverImg: "https://asset.bucherer.com/image/upload/v1741793446/Marketing%20Content/Campaigns/CPO/Imagery/2025-CPO-AP-OriginalSize-StillLife-2.jpg",
-        heroImg: "https://images.unsplash.com/photo-1617886903352-258e245b99ce?q=80&w=1600&auto=format&fit=crop",
-        detailImg: "https://images.unsplash.com/photo-1590001905470-333441541099?q=80&w=1600&auto=format&fit=crop"
+        heroImg: "https://asset.bucherer.com/image/upload/v1741793446/Marketing%20Content/Campaigns/CPO/Imagery/2025-CPO-AP-OriginalSize-StillLife-2.jpg",
+        gallery: [
+            { imageUrl: "https://i.ibb.co/gL4FMvfH/Bysassy-9.png", description: "Bysassy website design and layout." },
+            { imageUrl: "https://i.ibb.co/fzXw6Hzg/Bysassy-10.png", description: "Bysassy website design and layout." },
+            { imageUrl: "https://i.ibb.co/7JynQFH6/Bysassy-8.png", description: "Bysassy website design and layout." },
+            { imageUrl: "https://i.ibb.co/PZvxL4tW/Bysassy-7.png", description: "Bysassy website design and layout." },
+            { imageUrl: "https://i.ibb.co/CDfN8Zq/Bysassy-6.png", description: "Bysassy website design and layout." },
+            { imageUrl: "https://i.ibb.co/8n9QCjJL/Bysassy-5.png", description: "Bysassy website design and layout." },
+            { imageUrl: "https://i.ibb.co/mrT4BNR8/Bysassy-4.png", description: "Bysassy website design and layout." },
+            { imageUrl: "https://i.ibb.co/N20RS2KK/Bysassy-3.png", description: "Bysassy website design and layout." },
+            { imageUrl: "https://i.ibb.co/gFvstdz4/Bysassy-2.png", description: "Bysassy website design and layout." },
+            { imageUrl: "https://i.ibb.co/bRWnQcqX/Bysassy-1.png", description: "Bysassy website design and layout." }
+        ]
     },
     lumina: {
         key: "lumina",

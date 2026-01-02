@@ -5,23 +5,52 @@ import Icon from './Icon';
 // Helper component for character-level reveal animation
 const AnimatedWord: React.FC<{ text: string; baseDelay: number; isHighlighted?: boolean; hasMargin?: boolean; }> = ({ text, baseDelay, isHighlighted = false, hasMargin = true }) => {
     const chars = Array.from(text);
-    const highlightClasses = "bg-black text-white dark:bg-white dark:text-black px-2 pt-1 pb-0 md:px-4 md:pt-2 md:pb-1 rounded-md";
     const charDelayIncrement = 0.03;
 
+    // Base styles for the container
+    const containerClasses = `relative inline-block align-bottom ${hasMargin ? 'mr-3' : ''}`;
+    const highlightPaddingClasses = "px-2 pt-1 pb-0 md:px-4 md:pt-2 md:pb-1";
+
+    // Styles for the animated background
+    const highlightBgClasses = "absolute inset-0 bg-black dark:bg-white rounded-md z-0";
+
+    // Styles for the text itself
+    const textClasses = isHighlighted ? "text-white dark:text-black" : "";
+
     return (
-        <span className={`inline-block align-bottom ${hasMargin ? 'mr-3' : ''} ${isHighlighted ? highlightClasses : ''}`}>
-            <span aria-hidden="true">
+        <span className={`${containerClasses} ${isHighlighted ? highlightPaddingClasses : ''}`}>
+            {/* The animated background, only rendered if highlighted */}
+            {isHighlighted && (
+                <span
+                    aria-hidden="true"
+                    className={highlightBgClasses}
+                    style={{
+                        transform: 'scaleX(0)',
+                        transformOrigin: 'left',
+                        animationName: 'scale-in',
+                        animationDuration: '0.5s', // A snappy, consistent duration
+                        animationTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                        animationFillMode: 'forwards',
+                        animationDelay: `${baseDelay}s`
+                    }}
+                />
+            )}
+            
+            {/* The text characters that animate in */}
+            <span aria-hidden="true" className="relative z-10">
                 {chars.map((char, index) => {
                     const delay = baseDelay + index * charDelayIncrement;
                     return (
                         <span key={index} className="reveal-text inline-block">
-                            <span className="reveal-inner" style={{ animationDelay: `${delay}s` }}>
+                            <span className={`reveal-inner ${textClasses}`} style={{ animationDelay: `${delay}s` }}>
                                 {char === ' ' ? '\u00A0' : char}
                             </span>
                         </span>
                     );
                 })}
             </span>
+
+            {/* Screen reader text */}
             <span className="sr-only">{text}</span>
         </span>
     );

@@ -5,7 +5,7 @@ const Belief: React.FC = () => {
     const beliefRef = useRef<HTMLDivElement>(null);
     const [scrollProgress, setScrollProgress] = useState(0);
     
-    const text = "I believe most marketing fails because it moves too slow and costs too much. Build lean. Deploy fast. Adjust until it works.";
+    const text = "Most marketing fails because it’s slow, expensive, and disconnected from reality. I help clients build lean systems, deploy fast, double down on what works, and cut what doesn’t.";
     const words = text.split(' ');
 
     useEffect(() => {

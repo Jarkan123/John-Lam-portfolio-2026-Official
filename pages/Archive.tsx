@@ -19,7 +19,7 @@ const Archive: React.FC<ArchiveProps> = ({ projects, onOpenProject }) => {
                 </p>
             </header>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                {/* FIX: Explicitly type `project` to `Project` to resolve TypeScript error where it was inferred as `unknown`. */}
+                {/* FIX: Add type annotation to 'project' to resolve type inference issues with Object.values() */}
                 {allProjects.map((project: Project) => (
                     <WorkCard
                         key={project.key}

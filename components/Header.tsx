@@ -14,7 +14,9 @@ const Header: React.FC<HeaderProps> = ({ onToggleTheme, theme, onNavigate }) => 
             <div className="flex justify-between items-center h-16 md:h-20 px-6 md:px-8 max-w-[1920px] mx-auto">
                 {/* Logo */}
                 <a href="/" onClick={(e) => { e.preventDefault(); onNavigate('/'); }} className="flex items-center gap-2 group z-50">
-                    <div className="w-6 h-6 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center font-display font-semibold text-xs rounded-[4px]">JL</div>
+                    <div className="w-6 h-6 bg-black dark:bg-white rounded-md flex items-center justify-center">
+                        <span className="font-display text-xs font-semibold text-white dark:text-black">JL</span>
+                    </div>
                     <span className="font-display font-medium text-sm tracking-tight uppercase hidden md:block group-hover:opacity-60 transition-opacity">John Lam</span>
                 </a>
 

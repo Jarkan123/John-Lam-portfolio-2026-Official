@@ -33,21 +33,25 @@ export const PROJECTS: Record<ProjectKey, Project> = {
     },
     bysassy: {
         key: "bysassy",
-        title: "Bysassy Luxury Editorial",
-        cat: "Luxury Lifestyle Brand",
+        title: "Bysassy Editorial Website",
+        cat: "Luxury Editorial Website",
         year: "2024",
-        impactStatement: "Redefining Digital Authority for Luxury Real Estate",
-        desc: "A high-end editorial website built for Bysassy, designed to present luxury real estate, fine watchmaking, and travel through a content-first experience.",
+        impactStatement: "Designed and launched the full editorial website in 30 days",
+        desc: "By Sassy is a luxury editorial website covering real estate, fine watchmaking, and high-end travel. The project focused on building a content-first publishing platform that balances editorial aesthetics with long-term performance and scalability.",
         measuredImpact: [
-            "Increased time on site by 120%",
-            "Streamlined content management for daily updates",
-            "Interactive premium visual assets integration"
+            "Launched the full editorial website in 30 days, from structure to deployment",
+            "+120% improvement in SEO performance within the initial growth phase through structured site architecture and search-led content strategy",
+            "Sub-2-second page load speed achieved across key templates, delivering a smooth, editorial-grade reading experience"
         ],
-        tags: ["Website Development", "Editorial Design", "SEO"],
+        tags: ["Website Development", "Editorial Design", "SEO", "CMS Architecture"],
         coverImg: "https://bysassy.com/wp-content/uploads/2025/11/SIDG11064_474-St-Kilda-Rd_E01_Hero_44_7333-1-scaled.jpg",
         heroImg: "https://bysassy.com/wp-content/uploads/2025/11/SIDG11064_474-St-Kilda-Rd_E01_Hero_44_7333-1-scaled.jpg",
+        liveSiteUrl: "https://bysassy.com/en/",
         gallery: [
-            { imageUrl: "https://i.ibb.co/gL4FMvfH/Bysassy-9.png", description: "Bysassy editorial grid layout." }
+            { 
+                imageUrl: "https://i.ibb.co/gL4FMvfH/Bysassy-9.png", 
+                description: "Content-first grid layout designed for readability and visual impact." 
+            }
         ]
     }
 };

@@ -52,7 +52,6 @@ const Work: React.FC<WorkProps> = ({ onOpenProject, onNavigate }) => {
             const currentScroll = scrollRef.current.scrollLeft;
             const target = direction === 'left' ? currentScroll - width : currentScroll + width;
             
-            // Loop logic for manual arrow buttons
             if (direction === 'right' && currentScroll >= (featuredProjects.length - 1) * width - 10) {
                 scrollToProject(0);
             } else if (direction === 'left' && currentScroll <= 10) {
@@ -68,17 +67,15 @@ const Work: React.FC<WorkProps> = ({ onOpenProject, onNavigate }) => {
 
     return (
         <section id="portfolio" className="bg-white dark:bg-dark-900 overflow-hidden">
-            {/* Section Header */}
             <div className="px-6 md:px-12 py-20 md:py-32 flex flex-col md:flex-row justify-between items-start md:items-end gap-12 border-b border-black/5 dark:border-white/5">
                 <div className="space-y-6">
-                    <span className="text-[10px] uppercase tracking-[0.3em] opacity-40 font-bold block">Selected Work</span>
+                    <span className="text-[10px] uppercase tracking-[0.3em] opacity-60 font-bold block">Selected Work</span>
                     <h2 className="font-display text-5xl md:text-7xl lg:text-8xl uppercase tracking-tighter leading-[0.85] max-w-4xl">
                         Featured <br />
                         <span className="text-black/30 dark:text-white/30">Case Studies.</span>
                     </h2>
                 </div>
                 
-                {/* Navigation Controls */}
                 <div className="flex items-center gap-3">
                     <button 
                         onClick={() => scroll('left')}
@@ -97,7 +94,6 @@ const Work: React.FC<WorkProps> = ({ onOpenProject, onNavigate }) => {
                 </div>
             </div>
 
-            {/* Immersive Slider - FULL WIDTH */}
             <div 
                 ref={scrollRef}
                 onScroll={checkScroll}

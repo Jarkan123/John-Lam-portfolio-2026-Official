@@ -25,7 +25,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ quote, name, title })
             </div>
             <div className="flex flex-col">
                 <p className="font-display text-lg md:text-xl font-bold tracking-tight text-black dark:text-white">{name}</p>
-                <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] opacity-40 font-bold mt-1">{title}</p>
+                <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] opacity-60 font-bold mt-1">{title}</p>
             </div>
         </div>
     </div>
@@ -92,7 +92,7 @@ const Testimonials: React.FC = () => {
             <div className="max-w-[1920px] mx-auto">
                 <div className="mb-16 md:mb-24 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
                     <div className="space-y-4 md:space-y-6">
-                        <span className="text-[10px] uppercase tracking-[0.3em] opacity-40 font-bold block">Testimonial from past client</span>
+                        <span className="text-[10px] uppercase tracking-[0.3em] opacity-60 font-bold block">Testimonial from past client</span>
                         <h2 className="font-display text-4xl md:text-7xl lg:text-8xl uppercase tracking-tighter leading-[0.85] text-black dark:text-white">
                             Trusted <br /><span className="text-black/30 dark:text-white/30">Feedback.</span>
                         </h2>

@@ -15,10 +15,8 @@ interface ServiceCardProps {
 const ServiceCard: React.FC<ServiceCardProps> = ({ num, icon, title, description, image, isReversed = false, onInquire }) => (
     <div className={`group relative overflow-hidden border-b border-black/5 dark:border-white/5 flex flex-col ${isReversed ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
         
-        {/* Fill Background Hover Effect */}
         <div className="absolute inset-0 bg-black dark:bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-custom z-0"></div>
 
-        {/* Image Side */}
         <div className="relative w-full lg:w-1/2 h-[350px] lg:h-auto overflow-hidden z-10">
             <img 
                 src={image} 
@@ -28,11 +26,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ num, icon, title, description
             <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700"></div>
         </div>
 
-        {/* Content Side */}
         <div className="relative w-full lg:w-1/2 p-8 md:p-16 lg:p-24 flex flex-col justify-center z-10">
             <div className="flex justify-between items-start mb-8 md:mb-12">
                 <div className="space-y-4">
-                    <span className="inline-block text-[10px] md:text-xs font-mono border border-current px-3 py-1 rounded-full uppercase tracking-[0.3em] transition-all duration-500 group-hover:text-white dark:group-hover:text-black group-hover:border-white/20 dark:group-hover:border-black/20">
+                    <span className="inline-block text-[10px] md:text-xs font-mono border border-current px-3 py-1 rounded-full uppercase tracking-[0.3em] transition-all duration-500 group-hover:text-white dark:group-hover:text-black group-hover:border-white/20 dark:group-hover:border-black/20 font-bold">
                         {num}
                     </span>
                     <h3 className="font-display text-3xl md:text-5xl lg:text-6xl uppercase tracking-tighter leading-[0.9] transition-colors duration-500 group-hover:text-white dark:group-hover:text-black">
@@ -68,7 +65,7 @@ const Services: React.FC<ServicesProps> = ({ onOpenDiscoveryModal }) => {
         <section id="service" className="bg-white dark:bg-dark-900 border-t border-black/5 dark:border-white/5 overflow-hidden">
             <div className="px-6 md:px-12 py-24 md:py-40 flex flex-col md:flex-row justify-between items-start md:items-end gap-12 max-w-[1920px] mx-auto">
                 <div className="space-y-6">
-                    <span className="text-[10px] uppercase tracking-[0.3em] opacity-40 font-bold block">Services</span>
+                    <span className="text-[10px] uppercase tracking-[0.3em] opacity-60 font-bold block">Services</span>
                     <h2 className="font-display text-5xl md:text-7xl lg:text-8xl uppercase tracking-tighter leading-[0.85] max-w-4xl text-black dark:text-white">
                         Integrated <br />
                         <span className="text-black/30 dark:text-white/30">Digital Marketing.</span>
@@ -79,8 +76,8 @@ const Services: React.FC<ServicesProps> = ({ onOpenDiscoveryModal }) => {
                         I build data-driven systems that bridge the gap between creative brand identity and measurable revenue performance.
                     </p>
                     <div className="flex gap-4">
-                        <div className="px-4 py-2 bg-black/5 dark:bg-white/5 rounded-full text-[9px] uppercase tracking-widest font-bold border border-black/5 dark:border-white/5">Fullstack Marketing</div>
-                        <div className="px-4 py-2 bg-black/5 dark:bg-white/5 rounded-full text-[9px] uppercase tracking-widest font-bold border border-black/5 dark:border-white/5">Automation</div>
+                        <div className="px-4 py-2 bg-black/5 dark:bg-white/5 rounded-full text-[9px] uppercase tracking-widest font-bold border border-black/5 dark:border-white/5 opacity-80">Fullstack Marketing</div>
+                        <div className="px-4 py-2 bg-black/5 dark:bg-white/5 rounded-full text-[9px] uppercase tracking-widest font-bold border border-black/5 dark:border-white/5 opacity-80">Automation</div>
                     </div>
                 </div>
             </div>

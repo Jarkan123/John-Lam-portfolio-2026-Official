@@ -1,12 +1,5 @@
-
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Icon from './Icon';
-
-/**
- * ASSET RESOLUTIONS:
- * iPhone Mockup: 1080 x 2340 pixels (9:19.5 aspect ratio) - Vertical
- * iPad Mockup: 2732 x 2048 pixels (4:3 aspect ratio) - Horizontal/Landscape
- */
 
 const AnimatedWord: React.FC<{ text: string; baseDelay: number; isHighlighted?: boolean; hasMargin?: boolean; }> = ({ text, baseDelay, isHighlighted = false, hasMargin = true }) => {
     const chars = Array.from(text);
@@ -55,10 +48,10 @@ const AnimatedWord: React.FC<{ text: string; baseDelay: number; isHighlighted?: 
 
 const IPadMockup = React.forwardRef<HTMLDivElement, { currentIndex: number }>(({ currentIndex }, ref) => {
     const ipadImages = [
-        "https://i.ibb.co/Jjbwr3Hr/GLOBETROTTER-2048-x-1530-px.png", // Ipad mockup 1
-        "https://i.ibb.co/8ghFMz4D/by-SASSY-Final-Presentation-0724-pdf.png", // Ipad mockup 2
-        "https://i.ibb.co/LzQf6NCc/tp-MYp0-Abqt.png", // Ipad mockup 3 (New)
-        "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=2732&h=2048&auto=format&fit=crop" // Ipad mockup 4
+        "https://i.ibb.co/Swxg7kvs/GLOBETROTTER-2048-x-1530-px-1.png",
+        "https://i.ibb.co/8ghFMz4D/by-SASSY-Final-Presentation-0724-pdf.png",
+        "https://i.ibb.co/LzQf6NCc/tp-MYp0-Abqt.png",
+        "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=2732&h=2048&auto=format&fit=crop"
     ];
 
     return (
@@ -82,10 +75,10 @@ const IPadMockup = React.forwardRef<HTMLDivElement, { currentIndex: number }>(({
 
 const PhoneMockup = React.forwardRef<HTMLDivElement, { currentIndex: number }>(({ currentIndex }, ref) => {
     const images = [
-        "https://i.ibb.co/zH6hRxw8/Mobile-Iphone-mockup.png", // Iphone mockup 1
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1080&h=2340&auto=format&fit=crop", // Iphone mockup 2
-        "https://i.ibb.co/4ZpWP6TY/Mobile-Iphone-mockup-1.png", // Iphone mockup 3 (New)
-        "https://i.ibb.co/fzXw6Hzg/Bysassy-10.png" // Iphone mockup 4
+        "https://i.ibb.co/zH6hRxw8/Mobile-Iphone-mockup.png",
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1080&h=2340&auto=format&fit=crop",
+        "https://i.ibb.co/4ZpWP6TY/Mobile-Iphone-mockup-1.png",
+        "https://i.ibb.co/fzXw6Hzg/Bysassy-10.png"
     ];
 
     return (
@@ -119,16 +112,13 @@ const Hero: React.FC<HeroProps> = ({ isLoading }) => {
     const phoneRef = useRef<HTMLDivElement>(null);
     const ipadRef = useRef<HTMLDivElement>(null);
 
-    // Parallax logic
     useEffect(() => {
         const handleScroll = () => {
             const scrollY = window.scrollY;
             if (phoneRef.current) {
-                // Phone moves faster (0.15 multiplier)
                 phoneRef.current.style.transform = `translateY(${scrollY * 0.15}px)`;
             }
             if (ipadRef.current) {
-                // IPad moves slower (0.05 multiplier)
                 ipadRef.current.style.transform = `translateY(${scrollY * 0.05}px)`;
             }
         };
@@ -141,7 +131,7 @@ const Hero: React.FC<HeroProps> = ({ isLoading }) => {
         if (intervalRef.current) clearInterval(intervalRef.current);
         intervalRef.current = window.setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % 4);
-        }, 5000); // 5 seconds for auto-slide
+        }, 5000);
     }, []);
 
     useEffect(() => {
@@ -153,7 +143,7 @@ const Hero: React.FC<HeroProps> = ({ isLoading }) => {
 
     const handleManualChange = (index: number) => {
         setCurrentIndex(index);
-        startTimer(); // Reset timer on manual interaction
+        startTimer();
     };
 
     const line1 = [
@@ -178,31 +168,30 @@ const Hero: React.FC<HeroProps> = ({ isLoading }) => {
     return (
         <header className="min-h-screen flex flex-col justify-between px-6 md:px-12 pt-32 pb-12 relative overflow-hidden">
             <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-8">
-                {/* Left Side: Headline */}
                 <div className="w-full lg:w-3/5 text-center lg:text-left">
                     <h1 key={isLoading ? 'loading' : 'loaded'} className="font-display text-[10.5vw] md:text-[6.5vw] lg:text-[5.5vw] leading-[0.95] tracking-tighter uppercase font-medium select-none text-black dark:text-white z-20">
-                        <span className="block">
+                        <span className="block mb-2 md:mb-4">
                             {line1.map((word, index) => {
                                 const baseDelay = runningDelay;
                                 runningDelay += (word.text.length * charDelay) + wordPause;
                                 return <AnimatedWord key={index} text={word.text} baseDelay={baseDelay} isHighlighted={word.highlight} hasMargin={index < line1.length - 1} />;
                             })}
                         </span>
-                        <span className="block mt-1 md:mt-3">
+                        <span className="block mb-2 md:mb-4">
                              {line2.map((word, index) => {
+                                const baseDelay = runningDelay;
+                                runningDelay += (word.text.length * charDelay) + wordPause;
+                                return <AnimatedWord key={index} text={word.text} baseDelay={baseDelay} isHighlighted={word.highlight} hasMargin={index < line1.length - 1} />;
+                            })}
+                        </span>
+                        <span className="block mb-2 md:mb-4">
+                             {line3.map((word, index) => {
                                 const baseDelay = runningDelay;
                                 runningDelay += (word.text.length * charDelay) + wordPause;
                                 return <AnimatedWord key={index} text={word.text} baseDelay={baseDelay} isHighlighted={word.highlight} hasMargin={index < line2.length - 1} />;
                             })}
                         </span>
-                        <span className="block mt-1 md:mt-3">
-                             {line3.map((word, index) => {
-                                const baseDelay = runningDelay;
-                                runningDelay += (word.text.length * charDelay) + wordPause;
-                                return <AnimatedWord key={index} text={word.text} baseDelay={baseDelay} isHighlighted={word.highlight} hasMargin={index < line3.length - 1} />;
-                            })}
-                        </span>
-                        <span className="block mt-1 md:mt-3">
+                        <span className="block">
                              {line4.map((word, index) => {
                                 const baseDelay = runningDelay;
                                 runningDelay += (word.text.length * charDelay) + wordPause;
@@ -212,19 +201,15 @@ const Hero: React.FC<HeroProps> = ({ isLoading }) => {
                     </h1>
                 </div>
 
-                {/* Right Side: Mockups */}
                 <div className="relative w-full lg:w-2/5 flex flex-col items-center lg:items-end justify-center h-auto min-h-[500px]">
                     <div className="relative w-full flex flex-col items-center lg:block">
-                        {/* iPhone */}
                         <div className="relative lg:absolute lg:-left-16 lg:top-1/2 lg:-translate-y-1/2 z-20 mb-12 lg:mb-0">
                             <PhoneMockup ref={phoneRef} currentIndex={currentIndex} />
                         </div>
-                        {/* iPad */}
                         <div className="w-full lg:w-auto">
                             <IPadMockup ref={ipadRef} currentIndex={currentIndex} />
                         </div>
                         
-                        {/* Interactive Slider Dots - Refined for PC Interactivity */}
                         <div className="mt-12 lg:mt-16 lg:absolute lg:bottom-[-90px] lg:right-0">
                             <div className="flex items-center gap-1 bg-black/5 dark:bg-white/5 backdrop-blur-xl px-4 py-2 rounded-full border border-black/10 dark:border-white/10 shadow-lg">
                                 {[0, 1, 2, 3].map((idx) => (
@@ -239,8 +224,6 @@ const Hero: React.FC<HeroProps> = ({ isLoading }) => {
                                             ? 'w-14 bg-black dark:bg-white shadow-[0_0_20px_rgba(0,0,0,0.15)] dark:shadow-[0_0_20px_rgba(255,255,255,0.1)]' 
                                             : 'w-5 bg-black/20 dark:bg-white/20 group-hover:bg-black/40 dark:group-hover:bg-white/40 group-hover:w-8'
                                         }`}></div>
-                                        {/* Larger hit area visual hint on hover */}
-                                        <div className="absolute inset-0 bg-transparent rounded-lg cursor-pointer"></div>
                                     </button>
                                 ))}
                             </div>
@@ -251,18 +234,18 @@ const Hero: React.FC<HeroProps> = ({ isLoading }) => {
 
             <div className="flex flex-col md:flex-row justify-between gap-8 mt-12 lg:mt-8 items-end relative z-10">
                 <div className="max-w-xs text-center md:text-left mx-auto md:mx-0">
-                    <p className="text-sm text-black/60 dark:text-white/60 font-light leading-relaxed">
+                    <p className="text-sm text-black/70 dark:text-white/70 font-medium leading-relaxed">
                         For half a decade, I have been helping clients transform their brands into systems that create revenue. If growth matters to you, then you have come to the right place.
                     </p>
                 </div>
                 <div className="flex flex-col gap-3 items-center md:items-end w-full md:w-auto">
-                    <span className="text-[10px] uppercase tracking-widest opacity-40">System Status</span>
+                    <span className="text-[10px] uppercase tracking-widest opacity-60 font-bold">Status</span>
                     <div className="flex items-center gap-3 bg-black/5 dark:bg-white/5 w-fit px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5">
                         <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                         </span>
-                        <span className="uppercase text-[10px] font-medium tracking-wide">Available for Projects</span>
+                        <span className="uppercase text-[10px] font-bold tracking-wide">Available for Projects</span>
                     </div>
                 </div>
             </div>

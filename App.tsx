@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useCallback } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -40,11 +41,14 @@ const App: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        const onLocationChange = () => {
+        // This effect handles browser back/forward navigation for page changes.
+        const handleLocationChange = () => {
             setCurrentPath(window.location.pathname);
         };
-        window.addEventListener('popstate', onLocationChange);
-        return () => window.removeEventListener('popstate', onLocationChange);
+        
+        window.addEventListener('popstate', handleLocationChange);
+        
+        return () => window.removeEventListener('popstate', handleLocationChange);
     }, []);
 
     useEffect(() => {
@@ -105,9 +109,22 @@ const App: React.FC = () => {
     const closeLightbox = useCallback(() => setLightboxState(null), []);
     
     const navigate = (path: string) => {
-        window.history.pushState({}, '', path);
-        setCurrentPath(path);
+        if (path !== currentPath) {
+            window.history.pushState({}, '', path);
+            setCurrentPath(path);
+            window.scrollTo(0, 0); // Scroll to top on page change.
+        }
     };
+
+    const scrollToSection = useCallback((sectionId: string) => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }, []);
 
     const renderPage = () => {
         if (currentPath.startsWith('/admin')) {
@@ -125,10 +142,10 @@ const App: React.FC = () => {
     return (
         <>
             <Intro isLoading={isLoading} />
-            <div className={`bg-white dark:bg-dark-900 text-black dark:text-light-100 transition-opacity duration-1000 w-full relative selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+            <div className={`bg-white dark:bg-dark-900 text-black dark:text-light-100 transition-opacity duration-1000 w-full selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
                 <NoiseOverlay />
                 <Toast message={toastMessage} />
-                <Header onToggleTheme={toggleTheme} theme={theme} onNavigate={navigate} />
+                <Header onToggleTheme={toggleTheme} theme={theme} onNavigate={navigate} onScrollToSection={scrollToSection} />
                 <ProjectOverlay project={activeProject ? projects[activeProject] : null} onClose={closeProject} onOpenLightbox={openLightbox} />
                 <DiscoveryCallModal isOpen={isDiscoveryModalOpen} onClose={closeDiscoveryModal} />
 

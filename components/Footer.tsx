@@ -36,12 +36,12 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </div>
             </div>
             
-            <div className="border-t border-black/10 dark:border-white/10 pt-8 flex justify-between items-center text-[10px] uppercase tracking-widest opacity-40">
-                <div className="flex gap-4">
-                    <span>© 2024 John Lam</span>
-                    <a href="/admin" onClick={(e) => { e.preventDefault(); onNavigate('/admin'); }} className="hover:text-white transition-colors">Admin</a>
+            <div className="border-t border-black/10 dark:border-white/10 pt-8 flex justify-between items-center text-[10px] uppercase tracking-widest">
+                <div className="flex gap-4 items-center">
+                    <span className="opacity-40">© 2024 John Lam</span>
+                    <a href="/admin" onClick={(e) => { e.preventDefault(); onNavigate('/admin'); }} className="opacity-40 hover:opacity-100 transition-opacity">Admin</a>
                 </div>
-                <span>All Rights Reserved</span>
+                <span className="opacity-40">All Rights Reserved</span>
             </div>
 
             <div className="mt-12 select-none pointer-events-none">

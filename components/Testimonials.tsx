@@ -9,12 +9,24 @@ interface TestimonialCardProps {
 }
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ quote, name, title }) => (
-    <div className="p-8 md:p-12 bg-light-100 dark:bg-dark-800 border border-black/5 dark:border-white/5 rounded-lg flex flex-col justify-between h-full">
-        <Icon name="quote" className="w-8 h-8 opacity-10 mb-8" />
-        <p className="text-xl md:text-2xl font-light leading-relaxed text-black/80 dark:text-white/80 flex-grow">"{quote}"</p>
-        <div className="mt-8 pt-6 border-t border-black/5 dark:border-white/5">
-            <p className="font-display text-lg font-medium">{name}</p>
-            <p className="text-sm opacity-50">{title}</p>
+    <div className="p-8 md:p-12 lg:p-16 bg-light-100 dark:bg-dark-800 border border-black/5 dark:border-white/5 rounded-2xl flex flex-col justify-between h-full group transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
+        <div className="mb-10">
+            <div className="w-12 h-12 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center mb-6">
+                <Icon name="quote" className="w-6 h-6 text-black dark:text-white opacity-20" />
+            </div>
+            <p className="text-xl md:text-3xl font-light leading-[1.4] text-black/90 dark:text-white/90 tracking-tight">
+                "{quote}"
+            </p>
+        </div>
+        
+        <div className="pt-8 border-t border-black/5 dark:border-white/5 flex items-center gap-5">
+            <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center font-display font-bold text-base border border-black/5 dark:border-white/5">
+                {name.charAt(0)}
+            </div>
+            <div className="flex flex-col">
+                <p className="font-display text-lg md:text-xl font-bold tracking-tight text-black dark:text-white">{name}</p>
+                <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] opacity-40 font-bold mt-1">{title}</p>
+            </div>
         </div>
     </div>
 );
@@ -26,12 +38,12 @@ const testimonialsData = [
         title: "Founder — S&S Sons"
     },
     {
-        quote: "Working with John was a seamless experience. He understands brand integrity, respects long-term value, and builds systems that support both. The final product was not only beautiful but also incredibly performant.",
+        quote: "Working with John was a seamless experience. He understands brand integrity, respects long-term value, and builds systems that support both.",
         name: "Ms. Anita Kwok",
         title: "Representative — O2H2O"
     },
     {
-        quote: "The strategic insights and execution speed were game-changers. Our lead acquisition costs dropped by 40% within the first quarter, and our pipeline has never been stronger. A true partner in growth.",
+        quote: "The strategic insights and execution speed were game-changers. Our lead acquisition costs dropped by 40% within the first quarter.",
         name: "Ms. Jade Pham",
         title: "Regional Marketing Lead — GSK"
     }
@@ -46,9 +58,8 @@ const Testimonials: React.FC = () => {
         const el = scrollContainerRef.current;
         if (el) {
             const hasOverflow = el.scrollWidth > el.clientWidth;
-            setCanScrollLeft(el.scrollLeft > 0);
-            // Use a small buffer to account for subpixel rendering
-            setCanScrollRight(hasOverflow && el.scrollLeft < el.scrollWidth - el.clientWidth - 1);
+            setCanScrollLeft(el.scrollLeft > 10);
+            setCanScrollRight(hasOverflow && el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
         }
     }, []);
 
@@ -68,8 +79,7 @@ const Testimonials: React.FC = () => {
     const scroll = (direction: 'left' | 'right') => {
         const el = scrollContainerRef.current;
         if (el) {
-            // Scroll by 80% of the container's visible width for a pleasant scroll effect
-            const scrollAmount = el.clientWidth * 0.8;
+            const scrollAmount = el.clientWidth * 0.85;
             el.scrollBy({
                 left: direction === 'left' ? -scrollAmount : scrollAmount,
                 behavior: 'smooth'
@@ -78,26 +88,28 @@ const Testimonials: React.FC = () => {
     };
 
     return (
-        <section id="testimonials" className="py-24 px-6 md:px-12 border-b border-black/5 dark:border-white/5 overflow-hidden">
-            <div className="max-w-7xl mx-auto">
-                <div className="mb-16 flex flex-col md:flex-row justify-between items-center gap-8">
-                    <div className="text-center md:text-left">
-                        <span className="text-[10px] uppercase tracking-widest opacity-40 border border-black/20 dark:border-white/20 px-3 py-1 rounded-full">Testimonials</span>
-                        <h2 className="font-display text-4xl md:text-6xl uppercase tracking-tighter mt-6">What My Clients Say</h2>
+        <section id="testimonial" className="py-24 md:py-40 px-6 md:px-12 border-b border-black/5 dark:border-white/5 overflow-hidden bg-white dark:bg-dark-900">
+            <div className="max-w-[1920px] mx-auto">
+                <div className="mb-16 md:mb-24 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+                    <div className="space-y-4 md:space-y-6">
+                        <span className="text-[10px] uppercase tracking-[0.3em] opacity-40 font-bold block">Testimonial from past client</span>
+                        <h2 className="font-display text-4xl md:text-7xl lg:text-8xl uppercase tracking-tighter leading-[0.85] text-black dark:text-white">
+                            Trusted <br /><span className="text-black/30 dark:text-white/30">Feedback.</span>
+                        </h2>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <button onClick={() => scroll('left')} disabled={!canScrollLeft} className="w-12 h-12 flex items-center justify-center rounded-full border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                    <div className="flex items-center gap-3">
+                        <button onClick={() => scroll('left')} className={`w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-full border border-black/10 dark:border-white/10 transition-all ${canScrollLeft ? 'opacity-100 hover:bg-black hover:text-white' : 'opacity-20 pointer-events-none'}`}>
                             <Icon name="arrow-left" className="w-5 h-5" />
                         </button>
-                        <button onClick={() => scroll('right')} disabled={!canScrollRight} className="w-12 h-12 flex items-center justify-center rounded-full border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                        <button onClick={() => scroll('right')} className={`w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-full border border-black/10 dark:border-white/10 transition-all ${canScrollRight ? 'opacity-100 hover:bg-black hover:text-white' : 'opacity-20 pointer-events-none'}`}>
                             <Icon name="arrow-right" className="w-5 h-5" />
                         </button>
                     </div>
                 </div>
 
-                <div ref={scrollContainerRef} className="flex overflow-x-auto gap-8 pb-8 hide-scrollbar -mx-6 px-6 md:-mx-12 md:px-12">
+                <div ref={scrollContainerRef} className="flex overflow-x-auto gap-4 md:gap-8 pb-12 hide-scrollbar -mx-6 px-6 md:-mx-12 md:px-12 snap-x">
                     {testimonialsData.map((testimonial, index) => (
-                        <div key={index} className="flex-shrink-0 w-[90%] md:w-[45%] lg:w-[40%]">
+                        <div key={index} className="flex-shrink-0 w-[90%] md:w-[60%] lg:w-[45%] xl:w-[35%] snap-start">
                             <TestimonialCard {...testimonial} />
                         </div>
                     ))}

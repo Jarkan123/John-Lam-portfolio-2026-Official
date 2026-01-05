@@ -2,22 +2,21 @@
 import React from 'react';
 
 // A simple, robust component for each brand logo.
+// Sizes increased significantly: h-32 md:h-48 and w-60 md:w-80
 const BrandItem: React.FC<{ name: string; logoUrl: string }> = ({ name, logoUrl }) => (
-    // Increased container height and horizontal padding to space out logos.
-    <div className="flex-shrink-0 px-20 md:px-28 flex items-center justify-center h-32" aria-label={name}>
+    <div className="flex-shrink-0 px-10 md:px-16 flex items-center justify-center h-32 md:h-48 w-60 md:w-80" aria-label={name}>
         <img 
             src={logoUrl} 
             alt={`${name} logo`} 
-            // Increased max-height and max-width to make logos larger.
-            className="max-h-20 max-w-48 object-contain transition-opacity duration-300 opacity-60 hover:opacity-100 dark:invert"
-            loading="lazy"
+            className="max-h-20 md:max-h-32 max-w-[90%] object-contain transition-opacity duration-500 opacity-70 hover:opacity-100 dark:invert"
+            loading="eager"
+            fetchpriority="high"
         />
     </div>
 );
 
 // The main Brands component with the marquee effect.
 const Brands: React.FC = () => {
-    // Replaced with the new set of logos provided by the user.
     const brands = [
         { name: "GSK", logoUrl: "https://i.ibb.co/ZzgyTQg6/GSK-logo-2014-svg.png" },
         { name: "Sanlorenzo", logoUrl: "https://i.ibb.co/4RsxWs7T/Sanlorenzo-yacht-official-logo.jpg" },
@@ -32,21 +31,36 @@ const Brands: React.FC = () => {
         { name: "FE Credit", logoUrl: "https://i.ibb.co/238xNKzF/Ch-a-c-t-n-1080-x-1080-px-1.png" }
     ];
 
-    // The list is duplicated to create a seamless, infinite scrolling effect.
-    const marqueeBrands = [...brands, ...brands];
+    // To create a truly seamless loop with the -50% translate trick,
+    // we need two identical tracks within the scrolling container.
+    const LogoTrack = () => (
+        <div className="flex items-center">
+            {brands.map((brand, index) => (
+                <BrandItem key={`${brand.name}-${index}`} {...brand} />
+            ))}
+        </div>
+    );
 
     return (
-        <section id="brands" className="py-16 border-b border-black/5 dark:border-white/5">
-            <div className="text-center mb-12">
-                 <span className="text-[10px] uppercase tracking-widest opacity-40">Trusted by the best</span>
+        <section id="my-client" className="py-24 md:py-32 border-b border-black/5 dark:border-white/5 overflow-hidden">
+            <div className="text-center mb-16 md:mb-24 px-6">
+                 <h3 className="text-2xl md:text-5xl font-display uppercase tracking-widest font-medium text-black/80 dark:text-white/80">Trusted by the best</h3>
             </div>
-            {/* The overflow-hidden container is essential for the marquee effect. */}
+            
+            {/* 
+              The container uses 'animate-marquee' which translates from 0 to -50%.
+              By placing two LogoTrack components side-by-side, the end of the animation
+              perfectly matches the start, creating an infinite, non-resetting loop.
+            */}
             <div className="relative w-full overflow-hidden">
-                <div className="animate-marquee whitespace-nowrap flex items-center">
-                    {marqueeBrands.map((brand, index) => (
-                        <BrandItem key={`${brand.name}-${index}`} {...brand} />
-                    ))}
+                <div className="animate-marquee flex items-center w-max">
+                    <LogoTrack />
+                    <LogoTrack />
                 </div>
+                
+                {/* Visual Edge Fades */}
+                <div className="absolute inset-y-0 left-0 w-32 md:w-64 bg-gradient-to-r from-white dark:from-dark-900 to-transparent z-10 pointer-events-none"></div>
+                <div className="absolute inset-y-0 right-0 w-32 md:w-64 bg-gradient-to-l from-white dark:from-dark-900 to-transparent z-10 pointer-events-none"></div>
             </div>
         </section>
     );

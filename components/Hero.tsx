@@ -1,25 +1,25 @@
 
-import React from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Icon from './Icon';
 
-// Helper component for character-level reveal animation
+/**
+ * ASSET RESOLUTIONS:
+ * iPhone Mockup: 1080 x 2340 pixels (9:19.5 aspect ratio) - Vertical
+ * iPad Mockup: 2732 x 2048 pixels (4:3 aspect ratio) - Horizontal/Landscape
+ */
+
 const AnimatedWord: React.FC<{ text: string; baseDelay: number; isHighlighted?: boolean; hasMargin?: boolean; }> = ({ text, baseDelay, isHighlighted = false, hasMargin = true }) => {
     const chars = Array.from(text);
     const charDelayIncrement = 0.03;
 
-    // Base styles for the container
-    const containerClasses = `relative inline-block align-bottom ${hasMargin ? 'mr-3' : ''}`;
-    const highlightPaddingClasses = "px-2 pt-1 pb-0 md:px-4 md:pt-2 md:pb-1";
+    const containerClasses = `relative inline-block align-bottom ${hasMargin ? 'mr-3 md:mr-6' : ''}`;
+    const highlightPaddingClasses = "px-3 pt-1 pb-0.5 md:px-5 md:pt-2 md:pb-1";
 
-    // Styles for the animated background
     const highlightBgClasses = "absolute inset-0 bg-black dark:bg-white rounded-md z-0";
-
-    // Styles for the text itself
     const textClasses = isHighlighted ? "text-white dark:text-black" : "";
 
     return (
         <span className={`${containerClasses} ${isHighlighted ? highlightPaddingClasses : ''}`}>
-            {/* The animated background, only rendered if highlighted */}
             {isHighlighted && (
                 <span
                     aria-hidden="true"
@@ -28,7 +28,7 @@ const AnimatedWord: React.FC<{ text: string; baseDelay: number; isHighlighted?: 
                         transform: 'scaleX(0)',
                         transformOrigin: 'left',
                         animationName: 'scale-in',
-                        animationDuration: '0.5s', // A snappy, consistent duration
+                        animationDuration: '0.5s',
                         animationTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
                         animationFillMode: 'forwards',
                         animationDelay: `${baseDelay}s`
@@ -36,7 +36,6 @@ const AnimatedWord: React.FC<{ text: string; baseDelay: number; isHighlighted?: 
                 />
             )}
             
-            {/* The text characters that animate in */}
             <span aria-hidden="true" className="relative z-10">
                 {chars.map((char, index) => {
                     const delay = baseDelay + index * charDelayIncrement;
@@ -49,30 +48,125 @@ const AnimatedWord: React.FC<{ text: string; baseDelay: number; isHighlighted?: 
                     );
                 })}
             </span>
-
-            {/* Screen reader text */}
             <span className="sr-only">{text}</span>
         </span>
     );
 };
+
+const IPadMockup = React.forwardRef<HTMLDivElement, { currentIndex: number }>(({ currentIndex }, ref) => {
+    const ipadImages = [
+        "https://i.ibb.co/Jjbwr3Hr/GLOBETROTTER-2048-x-1530-px.png", // Ipad mockup 1
+        "https://i.ibb.co/8ghFMz4D/by-SASSY-Final-Presentation-0724-pdf.png", // Ipad mockup 2
+        "https://i.ibb.co/LzQf6NCc/tp-MYp0-Abqt.png", // Ipad mockup 3 (New)
+        "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=2732&h=2048&auto=format&fit=crop" // Ipad mockup 4
+    ];
+
+    return (
+        <div ref={ref} className="relative z-0 scale-100 transition-all duration-300 ease-out will-change-transform">
+            <div className="relative w-[320px] md:w-[480px] lg:w-[540px] aspect-[4/3] border-[10px] md:border-[12px] border-zinc-900 dark:border-white bg-zinc-100 dark:bg-zinc-800 rounded-[2rem] overflow-hidden shadow-xl mx-auto">
+                <div className="absolute inset-0">
+                    {ipadImages.map((img, index) => (
+                        <img 
+                            key={index}
+                            src={img} 
+                            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${index === currentIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}
+                            alt={`iPad Portfolio ${index + 1}`}
+                        />
+                    ))}
+                    <div className="absolute inset-0 bg-black/10 pointer-events-none"></div>
+                </div>
+            </div>
+        </div>
+    );
+});
+
+const PhoneMockup = React.forwardRef<HTMLDivElement, { currentIndex: number }>(({ currentIndex }, ref) => {
+    const images = [
+        "https://i.ibb.co/zH6hRxw8/Mobile-Iphone-mockup.png", // Iphone mockup 1
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1080&h=2340&auto=format&fit=crop", // Iphone mockup 2
+        "https://i.ibb.co/4ZpWP6TY/Mobile-Iphone-mockup-1.png", // Iphone mockup 3 (New)
+        "https://i.ibb.co/fzXw6Hzg/Bysassy-10.png" // Iphone mockup 4
+    ];
+
+    return (
+        <div ref={ref} className="relative z-20 group animate-float flex-shrink-0 transition-all duration-300 ease-out will-change-transform">
+            <div className="relative w-[180px] md:w-[220px] aspect-[9/19.5] border-[8px] md:border-[10px] border-zinc-950 dark:border-white bg-zinc-100 dark:bg-zinc-800 rounded-[2.2rem] md:rounded-[2.8rem] overflow-hidden shadow-2xl mx-auto">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 md:w-28 h-5 md:h-7 bg-zinc-950 dark:bg-white rounded-b-xl z-20 mt-[-1px]"></div>
+                
+                <div className="absolute inset-0 z-10">
+                    {images.map((img, index) => (
+                        <img 
+                            key={index}
+                            src={img} 
+                            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${index === currentIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-110'}`}
+                            alt={`Work Mockup ${index + 1}`}
+                        />
+                    ))}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+                </div>
+            </div>
+        </div>
+    );
+});
 
 interface HeroProps {
     isLoading: boolean;
 }
 
 const Hero: React.FC<HeroProps> = ({ isLoading }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const intervalRef = useRef<number | null>(null);
+    const phoneRef = useRef<HTMLDivElement>(null);
+    const ipadRef = useRef<HTMLDivElement>(null);
+
+    // Parallax logic
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollY = window.scrollY;
+            if (phoneRef.current) {
+                // Phone moves faster (0.15 multiplier)
+                phoneRef.current.style.transform = `translateY(${scrollY * 0.15}px)`;
+            }
+            if (ipadRef.current) {
+                // IPad moves slower (0.05 multiplier)
+                ipadRef.current.style.transform = `translateY(${scrollY * 0.05}px)`;
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const startTimer = useCallback(() => {
+        if (intervalRef.current) clearInterval(intervalRef.current);
+        intervalRef.current = window.setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % 4);
+        }, 5000); // 5 seconds for auto-slide
+    }, []);
+
+    useEffect(() => {
+        startTimer();
+        return () => {
+            if (intervalRef.current) clearInterval(intervalRef.current);
+        };
+    }, [startTimer]);
+
+    const handleManualChange = (index: number) => {
+        setCurrentIndex(index);
+        startTimer(); // Reset timer on manual interaction
+    };
+
     const line1 = [
-        { text: 'I', highlight: false },
-        { text: "don't", highlight: false },
-        { text: 'just', highlight: false },
-        { text: 'do', highlight: false },
-        { text: 'marketing,', highlight: true },
+        { text: 'Crafting', highlight: false },
+        { text: 'digital', highlight: true },
     ];
     const line2 = [
-        { text: 'I', highlight: false },
-        { text: 'build', highlight: false },
-        { text: 'growth', highlight: true },
-        { text: 'systems.', highlight: true },
+        { text: 'marketing', highlight: true },
+        { text: 'solution', highlight: false },
+    ];
+    const line3 = [
+        { text: 'that help', highlight: false },
+        { text: 'brand grow', highlight: true },
     ];
 
     let runningDelay = 0.1;
@@ -81,32 +175,78 @@ const Hero: React.FC<HeroProps> = ({ isLoading }) => {
 
     return (
         <header className="min-h-screen flex flex-col justify-between px-6 md:px-12 pt-32 pb-12 relative overflow-hidden">
-            <div className="relative z-10">
-                <h1 key={isLoading ? 'loading' : 'loaded'} className="font-display text-[13vw] md:text-[8.5vw] leading-[1.1] tracking-tighter uppercase font-medium select-none text-black dark:text-white">
-                    <span className="block">
-                        {line1.map((word, index) => {
-                            const baseDelay = runningDelay;
-                            runningDelay += (word.text.length * charDelay) + wordPause;
-                            return <AnimatedWord key={index} text={word.text} baseDelay={baseDelay} isHighlighted={word.highlight} hasMargin={index < line1.length - 1} />;
-                        })}
-                    </span>
-                    <span className="block mt-2 md:mt-4">
-                         {line2.map((word, index) => {
-                            const baseDelay = runningDelay;
-                            runningDelay += (word.text.length * charDelay) + wordPause;
-                            return <AnimatedWord key={index} text={word.text} baseDelay={baseDelay} isHighlighted={word.highlight} hasMargin={index < line2.length - 1} />;
-                        })}
-                    </span>
-                </h1>
+            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-8">
+                {/* Left Side: Headline */}
+                <div className="w-full lg:w-3/5 text-center lg:text-left">
+                    <h1 key={isLoading ? 'loading' : 'loaded'} className="font-display text-[10.5vw] md:text-[6.5vw] lg:text-[5.5vw] leading-[1.05] tracking-tighter uppercase font-medium select-none text-black dark:text-white z-20">
+                        <span className="block">
+                            {line1.map((word, index) => {
+                                const baseDelay = runningDelay;
+                                runningDelay += (word.text.length * charDelay) + wordPause;
+                                return <AnimatedWord key={index} text={word.text} baseDelay={baseDelay} isHighlighted={word.highlight} hasMargin={index < line1.length - 1} />;
+                            })}
+                        </span>
+                        <span className="block mt-2 md:mt-5">
+                             {line2.map((word, index) => {
+                                const baseDelay = runningDelay;
+                                runningDelay += (word.text.length * charDelay) + wordPause;
+                                return <AnimatedWord key={index} text={word.text} baseDelay={baseDelay} isHighlighted={word.highlight} hasMargin={index < line2.length - 1} />;
+                            })}
+                        </span>
+                        <span className="block mt-2 md:mt-5">
+                             {line3.map((word, index) => {
+                                const baseDelay = runningDelay;
+                                runningDelay += (word.text.length * charDelay) + wordPause;
+                                return <AnimatedWord key={index} text={word.text} baseDelay={baseDelay} isHighlighted={word.highlight} hasMargin={index < line3.length - 1} />;
+                            })}
+                        </span>
+                    </h1>
+                </div>
+
+                {/* Right Side: Mockups */}
+                <div className="relative w-full lg:w-2/5 flex flex-col items-center lg:items-end justify-center h-auto min-h-[500px]">
+                    <div className="relative w-full flex flex-col items-center lg:block">
+                        {/* iPhone */}
+                        <div className="relative lg:absolute lg:-left-16 lg:top-1/2 lg:-translate-y-1/2 z-20 mb-12 lg:mb-0">
+                            <PhoneMockup ref={phoneRef} currentIndex={currentIndex} />
+                        </div>
+                        {/* iPad */}
+                        <div className="w-full lg:w-auto">
+                            <IPadMockup ref={ipadRef} currentIndex={currentIndex} />
+                        </div>
+                        
+                        {/* Interactive Slider Dots - Refined for PC Interactivity */}
+                        <div className="mt-12 lg:mt-16 lg:absolute lg:bottom-[-90px] lg:right-0">
+                            <div className="flex items-center gap-1 bg-black/5 dark:bg-white/5 backdrop-blur-xl px-4 py-2 rounded-full border border-black/10 dark:border-white/10 shadow-lg">
+                                {[0, 1, 2, 3].map((idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => handleManualChange(idx)}
+                                        className="group relative px-2 py-3 focus:outline-none"
+                                        aria-label={`Go to slide ${idx + 1}`}
+                                    >
+                                        <div className={`h-3 rounded-full transition-all duration-500 ease-custom ${
+                                            idx === currentIndex 
+                                            ? 'w-14 bg-black dark:bg-white shadow-[0_0_20px_rgba(0,0,0,0.15)] dark:shadow-[0_0_20px_rgba(255,255,255,0.1)]' 
+                                            : 'w-5 bg-black/20 dark:bg-white/20 group-hover:bg-black/40 dark:group-hover:bg-white/40 group-hover:w-8'
+                                        }`}></div>
+                                        {/* Larger hit area visual hint on hover */}
+                                        <div className="absolute inset-0 bg-transparent rounded-lg cursor-pointer"></div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-between gap-8 mt-24 items-end relative z-10">
-                <div className="max-w-xs">
+            <div className="flex flex-col md:flex-row justify-between gap-8 mt-12 lg:mt-8 items-end relative z-10">
+                <div className="max-w-xs text-center md:text-left mx-auto md:mx-0">
                     <p className="text-sm text-black/60 dark:text-white/60 font-light leading-relaxed">
                         For half a decade, I have been helping clients transform their brands into systems that create revenue. If growth matters to you, then you have come to the right place.
                     </p>
                 </div>
-                <div className="flex flex-col gap-3 md:items-end">
+                <div className="flex flex-col gap-3 items-center md:items-end w-full md:w-auto">
                     <span className="text-[10px] uppercase tracking-widest opacity-40">System Status</span>
                     <div className="flex items-center gap-3 bg-black/5 dark:bg-white/5 w-fit px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5">
                         <span className="relative flex h-2 w-2">
@@ -118,7 +258,7 @@ const Hero: React.FC<HeroProps> = ({ isLoading }) => {
                 </div>
             </div>
             
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40vw] h-[40vw] bg-gradient-to-tr from-gray-200/50 to-gray-300/50 dark:from-blue-500/10 dark:to-purple-500/10 blur-[120px] rounded-full pointer-events-none opacity-50 dark:opacity-100"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] bg-gradient-to-tr from-gray-200/50 to-gray-300/50 dark:from-blue-500/10 dark:to-purple-500/10 blur-[120px] rounded-full pointer-events-none opacity-30 dark:opacity-100"></div>
         </header>
     );
 };

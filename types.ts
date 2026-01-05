@@ -10,6 +10,8 @@ export interface Project {
     cat: string;
     year: string;
     desc: string;
+    impactStatement?: string;
+    measuredImpact?: string[];
     tags: string[];
     coverImg: string;
     heroImg: string;

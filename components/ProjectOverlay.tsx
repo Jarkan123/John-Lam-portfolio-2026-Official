@@ -96,7 +96,7 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({ project, onClose, onOpe
                                 </a>
                             )}
                              {project.socialMediaUrl && (
-                                <a href={project.socialMediaUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-full py-4 bg-blue-600 text-white uppercase tracking-widest text-xs font-medium hover:opacity-80 transition-opacity">
+                                <a href={project.socialMediaUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-full py-4 bg-transparent border border-black/20 dark:border-white/20 text-black dark:text-white uppercase tracking-widest text-xs font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
                                     Visit Social Media
                                 </a>
                             )}

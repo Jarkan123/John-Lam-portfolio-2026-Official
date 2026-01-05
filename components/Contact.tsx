@@ -49,7 +49,7 @@ const Contact: React.FC<ContactProps> = ({ onOpenDiscoveryModal }) => {
     };
 
     return (
-        <section id="contact" className="grid grid-cols-1 lg:grid-cols-2">
+        <section id="contact-us" className="grid grid-cols-1 lg:grid-cols-2">
             <div className="p-8 md:p-12 lg:p-24 border-b lg:border-b-0 lg:border-r border-black/5 dark:border-white/5 bg-light-100 dark:bg-dark-800">
                 <div className="sticky top-32">
                     <span className="text-[10px] uppercase tracking-widest opacity-40 block mb-8">Start a project</span>
@@ -61,11 +61,11 @@ const Contact: React.FC<ContactProps> = ({ onOpenDiscoveryModal }) => {
                     </p>
                     
                     <div className="flex flex-col gap-6">
-                        <a href="mailto:minhlam14052001@gmail.com" className="text-lg hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-3 w-fit text-black dark:text-white">
+                        <a href="mailto:minhlam14052001@gmail.com" className="text-lg hover:opacity-70 transition-opacity flex items-center gap-3 w-fit text-black dark:text-white">
                             <Icon name="mail" className="w-4 h-4" />
                             <span className="underline decoration-1 underline-offset-4 decoration-black/20 dark:decoration-white/20">minhlam14052001@gmail.com</span>
                         </a>
-                        <button onClick={onOpenDiscoveryModal} className="text-lg hover:text-emerald-500 transition-colors flex items-center gap-3 w-fit text-black dark:text-white">
+                        <button onClick={onOpenDiscoveryModal} className="text-lg hover:opacity-70 transition-opacity flex items-center gap-3 w-fit text-black dark:text-white">
                             <Icon name="calendar" className="w-4 h-4" />
                             <span className="underline decoration-1 underline-offset-4 decoration-black/20 dark:decoration-white/20">Book a discovery call</span>
                         </button>

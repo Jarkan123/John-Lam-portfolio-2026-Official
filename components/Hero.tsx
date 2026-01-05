@@ -162,9 +162,11 @@ const Hero: React.FC<HeroProps> = ({ isLoading }) => {
     ];
     const line2 = [
         { text: 'marketing', highlight: true },
-        { text: 'solution', highlight: false },
     ];
     const line3 = [
+        { text: 'solution', highlight: false },
+    ];
+    const line4 = [
         { text: 'that help', highlight: false },
         { text: 'brand grow', highlight: true },
     ];
@@ -178,7 +180,7 @@ const Hero: React.FC<HeroProps> = ({ isLoading }) => {
             <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-8">
                 {/* Left Side: Headline */}
                 <div className="w-full lg:w-3/5 text-center lg:text-left">
-                    <h1 key={isLoading ? 'loading' : 'loaded'} className="font-display text-[10.5vw] md:text-[6.5vw] lg:text-[5.5vw] leading-[1.05] tracking-tighter uppercase font-medium select-none text-black dark:text-white z-20">
+                    <h1 key={isLoading ? 'loading' : 'loaded'} className="font-display text-[10.5vw] md:text-[6.5vw] lg:text-[5.5vw] leading-[0.95] tracking-tighter uppercase font-medium select-none text-black dark:text-white z-20">
                         <span className="block">
                             {line1.map((word, index) => {
                                 const baseDelay = runningDelay;
@@ -186,18 +188,25 @@ const Hero: React.FC<HeroProps> = ({ isLoading }) => {
                                 return <AnimatedWord key={index} text={word.text} baseDelay={baseDelay} isHighlighted={word.highlight} hasMargin={index < line1.length - 1} />;
                             })}
                         </span>
-                        <span className="block mt-2 md:mt-5">
+                        <span className="block mt-1 md:mt-3">
                              {line2.map((word, index) => {
                                 const baseDelay = runningDelay;
                                 runningDelay += (word.text.length * charDelay) + wordPause;
                                 return <AnimatedWord key={index} text={word.text} baseDelay={baseDelay} isHighlighted={word.highlight} hasMargin={index < line2.length - 1} />;
                             })}
                         </span>
-                        <span className="block mt-2 md:mt-5">
+                        <span className="block mt-1 md:mt-3">
                              {line3.map((word, index) => {
                                 const baseDelay = runningDelay;
                                 runningDelay += (word.text.length * charDelay) + wordPause;
                                 return <AnimatedWord key={index} text={word.text} baseDelay={baseDelay} isHighlighted={word.highlight} hasMargin={index < line3.length - 1} />;
+                            })}
+                        </span>
+                        <span className="block mt-1 md:mt-3">
+                             {line4.map((word, index) => {
+                                const baseDelay = runningDelay;
+                                runningDelay += (word.text.length * charDelay) + wordPause;
+                                return <AnimatedWord key={index} text={word.text} baseDelay={baseDelay} isHighlighted={word.highlight} hasMargin={index < line4.length - 1} />;
                             })}
                         </span>
                     </h1>

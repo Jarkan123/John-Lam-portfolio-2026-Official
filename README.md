@@ -2,7 +2,7 @@
 
 Bilingual (Vietnamese / English) website for John Lam: Marketing + AI Automation lead systems for service businesses.
 
-Built with React, Vite and Tailwind CSS. Deployed automatically to GitHub Pages on every push to `main`.
+Built with React, Vite and Tailwind CSS. Hosted on Netlify: every push to `main` is built and published automatically (settings in `netlify.toml`).
 
 ## Editing content
 

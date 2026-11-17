@@ -1,24 +1,31 @@
+import type { Lang } from './content';
 
 export interface GalleryImage {
     imageUrl: string;
     description: string;
 }
 
-export interface Project {
-    key: string;
+export interface LocalizedProject {
     title: string;
     cat: string;
-    year: string;
+    impactStatement: string;
+    /** Short overview shown on the card. */
     desc: string;
-    impactStatement?: string;
-    measuredImpact?: string[];
+    problem: string;
+    system: string;
+    measuredImpact: string[];
+}
+
+export interface Project {
+    key: string;
+    year: string;
     tags: string[];
     coverImg: string;
     heroImg: string;
-    detailImg?: string;
     liveSiteUrl?: string;
     socialMediaUrl?: string;
-    gallery?: GalleryImage[];
+    gallery?: { imageUrl: string; description: Record<Lang, string> }[];
+    content: Record<Lang, LocalizedProject>;
 }
 
 export type ProjectKey = string;

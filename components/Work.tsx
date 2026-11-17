@@ -1,113 +1,59 @@
-
-import React, { useRef, useState, useEffect, useCallback } from 'react';
-import type { ProjectKey } from '../types';
+import React, { useRef, useCallback } from 'react';
 import Icon from './Icon';
 import WorkCard from './WorkCard';
-import { useProjects } from '../hooks/useProjects';
+import { PROJECTS } from '../constants';
+import { useLang } from '../i18n';
 
 interface WorkProps {
-    onOpenProject: (key: ProjectKey) => void;
-    onNavigate: (path: string) => void;
+    onOpenProject: (key: string) => void;
+    onOpenDiscoveryModal: () => void;
 }
 
-const Work: React.FC<WorkProps> = ({ onOpenProject, onNavigate }) => {
-    const { projects } = useProjects();
-    const featuredProjects = Object.keys(projects);
+// Full-screen case study carousel, used on the portfolio page.
+const Work: React.FC<WorkProps> = ({ onOpenProject, onOpenDiscoveryModal }) => {
+    const { t } = useLang();
     const scrollRef = useRef<HTMLDivElement>(null);
-    const [canScrollLeft, setCanScrollLeft] = useState(false);
-    const [canScrollRight, setCanScrollRight] = useState(false);
+    const slideCount = PROJECTS.length + 1; // + the "coming soon" slide
 
-    const checkScroll = useCallback(() => {
-        if (scrollRef.current) {
-            const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-            setCanScrollLeft(scrollLeft > 10);
-            setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
-        }
+    const scrollToSlide = useCallback((index: number) => {
+        const el = scrollRef.current;
+        if (el) el.scrollTo({ left: index * el.clientWidth, behavior: 'smooth' });
     }, []);
 
-    useEffect(() => {
-        checkScroll();
-        window.addEventListener('resize', checkScroll);
-        return () => window.removeEventListener('resize', checkScroll);
-    }, [checkScroll]);
-
-    const scrollToProject = useCallback((index: number) => {
-        if (scrollRef.current) {
-            const width = scrollRef.current.clientWidth;
-            scrollRef.current.scrollTo({
-                left: index * width,
-                behavior: 'smooth'
-            });
-        }
-    }, []);
-
-    const handleNext = useCallback((currentIndex: number) => {
-        const nextIndex = (currentIndex + 1) % featuredProjects.length;
-        scrollToProject(nextIndex);
-    }, [featuredProjects.length, scrollToProject]);
-
-    const scroll = (direction: 'left' | 'right') => {
-        if (scrollRef.current) {
-            const width = scrollRef.current.clientWidth;
-            const currentScroll = scrollRef.current.scrollLeft;
-            const target = direction === 'left' ? currentScroll - width : currentScroll + width;
-            
-            if (direction === 'right' && currentScroll >= (featuredProjects.length - 1) * width - 10) {
-                scrollToProject(0);
-            } else if (direction === 'left' && currentScroll <= 10) {
-                scrollToProject(featuredProjects.length - 1);
-            } else {
-                scrollRef.current.scrollTo({
-                    left: target,
-                    behavior: 'smooth'
-                });
-            }
-        }
+    const currentSlide = () => {
+        const el = scrollRef.current;
+        return el ? Math.round(el.scrollLeft / el.clientWidth) : 0;
     };
 
+    const step = (dir: 1 | -1) => scrollToSlide((currentSlide() + dir + slideCount) % slideCount);
+
     return (
-        <section id="portfolio" className="bg-white dark:bg-dark-900 overflow-hidden">
-            <div className="px-6 md:px-12 py-20 md:py-32 flex flex-col md:flex-row justify-between items-start md:items-end gap-12 border-b border-black/5 dark:border-white/5">
-                <div className="space-y-6">
-                    <span className="text-[10px] uppercase tracking-[0.3em] opacity-60 font-bold block">Selected Work</span>
-                    <h2 className="font-display text-5xl md:text-7xl lg:text-8xl uppercase tracking-tighter leading-[0.85] max-w-4xl">
-                        Featured <br />
-                        <span className="text-black/30 dark:text-white/30">Case Studies.</span>
-                    </h2>
-                </div>
-                
-                <div className="flex items-center gap-3">
-                    <button 
-                        onClick={() => scroll('left')}
-                        className="w-14 h-14 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all group"
-                        aria-label="Previous Project"
-                    >
-                        <Icon name="arrow-left" className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
-                    </button>
-                    <button 
-                        onClick={() => scroll('right')}
-                        className="w-14 h-14 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all group"
-                        aria-label="Next Project"
-                    >
-                        <Icon name="arrow-right" className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                    </button>
-                </div>
+        <section className="bg-white dark:bg-dark-900 overflow-hidden">
+            <div className="px-6 md:px-12 py-6 flex justify-end gap-3 border-b border-black/5 dark:border-white/5">
+                <button onClick={() => step(-1)} className="w-14 h-14 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all group" aria-label={t.work.prev}>
+                    <Icon name="arrow-left" className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
+                </button>
+                <button onClick={() => step(1)} className="w-14 h-14 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all group" aria-label={t.work.next}>
+                    <Icon name="arrow-right" className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                </button>
             </div>
 
-            <div 
-                ref={scrollRef}
-                onScroll={checkScroll}
-                className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar cursor-grab active:cursor-grabbing w-full"
-            >
-                {featuredProjects.map((key, index) => (
-                    <div key={key} className="flex-shrink-0 w-full snap-center">
-                        <WorkCard 
-                            project={projects[key]} 
-                            onClick={() => onOpenProject(key)}
-                            onNext={() => handleNext(index)}
-                        />
+            <div ref={scrollRef} className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar w-full">
+                {PROJECTS.map((project, index) => (
+                    <div key={project.key} className="flex-shrink-0 w-full snap-center">
+                        <WorkCard project={project} onClick={() => onOpenProject(project.key)} onNext={() => scrollToSlide(index + 1)} />
                     </div>
                 ))}
+                <div className="flex-shrink-0 w-full snap-center">
+                    <div className="h-[70vh] md:h-[80vh] w-full flex flex-col items-center justify-center text-center px-6 bg-light-100 dark:bg-dark-800">
+                        <span className="font-display text-[20vw] md:text-[12vw] leading-none text-black/5 dark:text-white/5 select-none">+</span>
+                        <h3 className="font-display text-3xl md:text-5xl uppercase tracking-tighter text-black dark:text-white mb-4">{t.portfolioPage.comingTitle}</h3>
+                        <p className="text-base text-black/60 dark:text-white/60 font-light mb-10">{t.portfolioPage.comingDesc}</p>
+                        <button onClick={onOpenDiscoveryModal} className="px-7 py-4 rounded-full bg-black text-white dark:bg-white dark:text-black text-[10px] uppercase tracking-[0.25em] font-bold hover:opacity-80 transition-opacity">
+                            {t.nav.cta}
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
     );

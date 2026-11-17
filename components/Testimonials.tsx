@@ -1,6 +1,7 @@
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Icon from './Icon';
+import { useLang } from '../i18n';
 
 interface TestimonialCardProps {
     quote: string;
@@ -33,23 +34,33 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ quote, name, title })
 
 const testimonialsData = [
     {
-        quote: "John works fast and thinks clearly. He’s open to change, quick to test, and always focused on what actually helps the brand succeed.",
-        name: "Ms. Sassy Nguyen",
-        title: "Founder — S&S Sons"
+        quote: {
+            en: 'John works fast and thinks clearly. He’s open to change, quick to test, and always focused on what actually helps the brand succeed.',
+            vi: 'John làm việc nhanh và tư duy rõ ràng. Anh ấy cởi mở với thay đổi, thử nghiệm nhanh và luôn tập trung vào điều thực sự giúp thương hiệu thành công.',
+        },
+        name: 'Ms. Sassy Nguyen',
+        title: 'Founder — S&S Sons',
     },
     {
-        quote: "Working with John was a seamless experience. He understands brand integrity, respects long-term value, and builds systems that support both.",
-        name: "Ms. Anita Kwok",
-        title: "Representative — O2H2O"
+        quote: {
+            en: 'Working with John was a seamless experience. He understands brand integrity, respects long-term value, and builds systems that support both.',
+            vi: 'Làm việc với John rất suôn sẻ. Anh ấy hiểu giá trị thương hiệu, tôn trọng giá trị dài hạn và xây dựng hệ thống hỗ trợ cả hai.',
+        },
+        name: 'Ms. Anita Kwok',
+        title: 'Representative — O2H2O',
     },
     {
-        quote: "The strategic insights and execution speed were game-changers. Our lead acquisition costs dropped by 40% within the first quarter.",
-        name: "Ms. Jade Pham",
-        title: "Regional Marketing Lead — GSK"
-    }
+        quote: {
+            en: 'The strategic insights and execution speed were game-changers. Our lead acquisition costs dropped by 40% within the first quarter.',
+            vi: 'Góc nhìn chiến lược và tốc độ triển khai đã tạo ra khác biệt lớn. Chi phí có khách của chúng tôi giảm 40% ngay trong quý đầu tiên.',
+        },
+        name: 'Ms. Jade Pham',
+        title: 'Regional Marketing Lead — GSK',
+    },
 ];
 
 const Testimonials: React.FC = () => {
+    const { t, lang } = useLang();
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(false);
@@ -92,9 +103,9 @@ const Testimonials: React.FC = () => {
             <div className="max-w-[1920px] mx-auto">
                 <div className="mb-16 md:mb-24 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
                     <div className="space-y-4 md:space-y-6">
-                        <span className="text-[10px] uppercase tracking-[0.3em] opacity-60 font-bold block">Testimonial from past client</span>
+                        <span className="text-[10px] uppercase tracking-[0.3em] opacity-60 font-bold block">{t.testimonials.eyebrow}</span>
                         <h2 className="font-display text-4xl md:text-7xl lg:text-8xl uppercase tracking-tighter leading-[0.85] text-black dark:text-white">
-                            Trusted <br /><span className="text-black/30 dark:text-white/30">Feedback.</span>
+                            {t.testimonials.title1} <br /><span className="text-black/30 dark:text-white/30">{t.testimonials.title2}</span>
                         </h2>
                     </div>
                     <div className="flex items-center gap-3">
@@ -110,7 +121,7 @@ const Testimonials: React.FC = () => {
                 <div ref={scrollContainerRef} className="flex overflow-x-auto gap-4 md:gap-8 pb-12 hide-scrollbar -mx-6 px-6 md:-mx-12 md:px-12 snap-x">
                     {testimonialsData.map((testimonial, index) => (
                         <div key={index} className="flex-shrink-0 w-[90%] md:w-[60%] lg:w-[45%] xl:w-[35%] snap-start">
-                            <TestimonialCard {...testimonial} />
+                            <TestimonialCard quote={testimonial.quote[lang]} name={testimonial.name} title={testimonial.title} />
                         </div>
                     ))}
                 </div>

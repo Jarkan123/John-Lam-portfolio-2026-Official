@@ -1,6 +1,6 @@
-
 import React from 'react';
 import Icon from './Icon';
+import { useLang } from '../i18n';
 
 const MarqueeItem: React.FC<{ text: string }> = ({ text }) => (
     <>
@@ -10,12 +10,12 @@ const MarqueeItem: React.FC<{ text: string }> = ({ text }) => (
 );
 
 const Marquee: React.FC = () => {
-    const items = ["Strategy", "Design", "Development", "Performance"];
+    const { t } = useLang();
     return (
         <div className="py-6 border-y border-white/10 overflow-hidden bg-black">
             <div className="animate-marquee whitespace-nowrap flex items-center">
-                {items.map(item => <MarqueeItem key={item} text={item} />)}
-                {items.map(item => <MarqueeItem key={`${item}-2`} text={item} />)}
+                {t.marquee.map(item => <MarqueeItem key={item} text={item} />)}
+                {t.marquee.map(item => <MarqueeItem key={`${item}-2`} text={item} />)}
             </div>
         </div>
     );

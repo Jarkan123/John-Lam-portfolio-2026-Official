@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import type { Project, GalleryImage } from '../types';
 import Icon from './Icon';
-import { useLang } from '../i18n';
 
 interface ProjectOverlayProps {
     project: Project | null;
@@ -11,7 +10,6 @@ interface ProjectOverlayProps {
 }
 
 const ProjectOverlay: React.FC<ProjectOverlayProps> = ({ project, onClose, onOpenLightbox }) => {
-    const { t, lang } = useLang();
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(false);
@@ -27,6 +25,8 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({ project, onClose, onOpe
 
     useEffect(() => {
         if (project) {
+            // Need to re-run lucide when content changes
+            setTimeout(() => window.lucide?.createIcons({ attrs: { 'stroke-width': 1.5 } }), 100);
             
             const el = scrollContainerRef.current;
             if (el) {
@@ -60,8 +60,7 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({ project, onClose, onOpe
         );
     }
     
-    const c = project.content[lang];
-    const gallery: GalleryImage[] = (project.gallery || []).map(g => ({ imageUrl: g.imageUrl, description: g.description[lang] }));
+    const gallery = project?.gallery || [];
 
     return (
         <div id="project-overlay" className={`fixed inset-0 bg-white dark:bg-dark-900 z-[80] transition-transform duration-700 ease-custom ${project ? 'translate-y-0' : 'translate-y-full'} overflow-y-auto`}>
@@ -70,68 +69,50 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({ project, onClose, onOpe
             </button>
             <div id="project-content" className="min-h-screen">
                 <div className="relative w-full h-[50vh] md:h-[70vh] overflow-hidden">
-                    <img src={project.heroImg} className="w-full h-full object-cover" alt={c.title} />
+                    <img src={project.heroImg} className="w-full h-full object-cover" alt={project.title} />
                     <div className="absolute inset-0 bg-black/30"></div>
                     <div className="absolute bottom-0 left-0 p-6 md:p-12 w-full">
-                        <span className="text-white/80 text-xs uppercase tracking-widest border border-white/20 px-3 py-1 rounded-full backdrop-blur-sm">{c.cat}</span>
-                        <h1 className="text-white font-display text-5xl md:text-8xl uppercase tracking-tighter mt-4">{c.title}</h1>
+                        <span className="text-white/80 text-xs uppercase tracking-widest border border-white/20 px-3 py-1 rounded-full backdrop-blur-sm">{project.cat}</span>
+                        <h1 className="text-white font-display text-5xl md:text-8xl uppercase tracking-tighter mt-4">{project.title}</h1>
                     </div>
                 </div>
                 
                 <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 grid grid-cols-1 md:grid-cols-12 gap-12 bg-white dark:bg-dark-900 text-black dark:text-white">
                     <div className="md:col-span-4 space-y-8">
                         <div className="border-t border-black/10 dark:border-white/10 pt-4">
-                            <span className="block text-[10px] uppercase tracking-widest opacity-50 mb-2">{t.project.scope}</span>
+                            <span className="block text-[10px] uppercase tracking-widest opacity-50 mb-2">Scope</span>
                             <div className="flex flex-wrap gap-2">
                                 {project.tags.map(t => <span key={t} className="text-sm border border-black/10 dark:border-white/10 px-2 py-1 rounded">{t}</span>)}
                             </div>
                         </div>
                         <div className="border-t border-black/10 dark:border-white/10 pt-4">
-                            <span className="block text-[10px] uppercase tracking-widest opacity-50 mb-2">{t.project.year}</span>
+                            <span className="block text-[10px] uppercase tracking-widest opacity-50 mb-2">Year</span>
                             <span className="text-lg font-display">{project.year}</span>
                         </div>
                         <div className="border-t border-black/10 dark:border-white/10 pt-4 space-y-4">
                             {project.liveSiteUrl && (
                                 <a href={project.liveSiteUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-full py-4 bg-black dark:bg-white text-white dark:text-black uppercase tracking-widest text-xs font-medium hover:opacity-80 transition-opacity">
-                                    {t.project.liveSite}
+                                    Visit Live Site
                                 </a>
                             )}
                              {project.socialMediaUrl && (
                                 <a href={project.socialMediaUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-full py-4 bg-transparent border border-black/20 dark:border-white/20 text-black dark:text-white uppercase tracking-widest text-xs font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
-                                    {t.project.social}
+                                    Visit Social Media
                                 </a>
                             )}
                         </div>
                     </div>
                     
                     <div className="md:col-span-8">
-                        <h3 className="font-display text-2xl uppercase tracking-tight mb-6">{t.project.overview}</h3>
-                        <p className="text-lg md:text-xl font-light leading-relaxed opacity-80 mb-12">{c.desc}</p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                            <div className="border-t border-black/10 dark:border-white/10 pt-4">
-                                <span className="block text-[10px] uppercase tracking-widest opacity-50 mb-3">{t.project.problem}</span>
-                                <p className="font-light leading-relaxed opacity-80">{c.problem}</p>
-                            </div>
-                            <div className="border-t border-black/10 dark:border-white/10 pt-4">
-                                <span className="block text-[10px] uppercase tracking-widest opacity-50 mb-3">{t.project.system}</span>
-                                <p className="font-light leading-relaxed opacity-80">{c.system}</p>
-                            </div>
-                        </div>
-                        <div className="border-t border-black/10 dark:border-white/10 pt-4 mb-12">
-                            <span className="block text-[10px] uppercase tracking-widest opacity-50 mb-4">{t.project.results}</span>
-                            <ul className="space-y-3">
-                                {c.measuredImpact.map(r => (
-                                    <li key={r} className="flex items-start gap-3 font-display text-lg md:text-xl tracking-tight">
-                                        <span className="w-4 h-px bg-current mt-3.5 flex-shrink-0"></span>{r}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
+                        <h3 className="font-display text-2xl uppercase tracking-tight mb-6">Overview</h3>
+                        <p className="text-lg md:text-xl font-light leading-relaxed opacity-80 mb-12">
+                            {project.desc}
+                        </p>
+                        
                         {gallery.length > 0 ? (
                             <div>
                                 <div className="flex justify-between items-center mb-6">
-                                    <h3 className="font-display text-2xl uppercase tracking-tight">{t.project.gallery}</h3>
+                                    <h3 className="font-display text-2xl uppercase tracking-tight">Gallery</h3>
                                     <div className="flex items-center gap-4">
                                         <button onClick={() => scroll('left')} disabled={!canScrollLeft} className="w-10 h-10 flex items-center justify-center rounded-full border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
                                             <Icon name="arrow-left" className="w-4 h-4" />
@@ -154,14 +135,20 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({ project, onClose, onOpe
                                     ))}
                                 </div>
                             </div>
-                        ) : null}
+                        ) : project.detailImg && (
+                             <div className="space-y-8">
+                                <div className="bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden border border-black/5 dark:border-white/5">
+                                    <img src={project.detailImg} className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700" alt="Detail"/>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
                 <div className="border-t border-black/5 dark:border-white/5 py-24 text-center bg-light-100 dark:bg-dark-800 text-black dark:text-white">
                     <button onClick={onClose} className="group inline-flex flex-col items-center gap-4">
-                        <span className="text-[10px] uppercase tracking-widest opacity-40">{t.project.backToIndex}</span>
-                        <span className="font-display text-4xl uppercase tracking-tighter group-hover:opacity-50 transition-opacity">{t.project.close}</span>
+                        <span className="text-[10px] uppercase tracking-widest opacity-40">Back to Index</span>
+                        <span className="font-display text-4xl uppercase tracking-tighter group-hover:opacity-50 transition-opacity">Close Project</span>
                     </button>
                 </div>
             </div>

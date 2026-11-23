@@ -1,7 +1,0 @@
-# Netlify build settings (used automatically when this repo is connected to Netlify)
-[build]
-  command = "npm run build"
-  publish = "dist"
-
-[build.environment]
-  NODE_VERSION = "20"

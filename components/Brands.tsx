@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { useLang } from '../i18n';
 
 // A simple, robust component for each brand logo.
 // Sizes increased significantly: h-32 md:h-48 and w-60 md:w-80
@@ -11,14 +10,13 @@ const BrandItem: React.FC<{ name: string; logoUrl: string }> = ({ name, logoUrl 
             alt={`${name} logo`} 
             className="max-h-20 md:max-h-32 max-w-[90%] object-contain transition-opacity duration-500 opacity-70 hover:opacity-100 dark:invert"
             loading="eager"
-            
+            fetchpriority="high"
         />
     </div>
 );
 
 // The main Brands component with the marquee effect.
 const Brands: React.FC = () => {
-    const { t } = useLang();
     const brands = [
         { name: "GSK", logoUrl: "https://i.ibb.co/ZzgyTQg6/GSK-logo-2014-svg.png" },
         { name: "Sanlorenzo", logoUrl: "https://i.ibb.co/4RsxWs7T/Sanlorenzo-yacht-official-logo.jpg" },
@@ -46,7 +44,7 @@ const Brands: React.FC = () => {
     return (
         <section id="my-client" className="py-24 md:py-32 border-b border-black/5 dark:border-white/5 overflow-hidden">
             <div className="text-center mb-16 md:mb-24 px-6">
-                 <h3 className="text-2xl md:text-5xl font-display uppercase tracking-widest font-medium text-black/80 dark:text-white/80">{t.brands.title}</h3>
+                 <h3 className="text-2xl md:text-5xl font-display uppercase tracking-widest font-medium text-black/80 dark:text-white/80">Trusted by the best</h3>
             </div>
             
             {/* 

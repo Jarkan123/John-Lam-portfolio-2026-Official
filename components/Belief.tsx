@@ -1,13 +1,11 @@
 
 import React, { useRef, useEffect, useState } from 'react';
-import { useLang } from '../i18n';
 
 const Belief: React.FC = () => {
     const beliefRef = useRef<HTMLDivElement>(null);
     const [scrollProgress, setScrollProgress] = useState(0);
     
-    const { t } = useLang();
-    const text = t.belief;
+    const text = "Most marketing fails because it’s slow, expensive, and disconnected from reality. I help clients build lean systems, deploy fast, double down on what works, and cut what doesn’t.";
     const words = text.split(' ');
 
     useEffect(() => {

@@ -1,31 +1,20 @@
-# John Lam — Hệ thống Dẫn Đầu Ngách
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
 
-Bilingual (Vietnamese / English) website for John Lam: Marketing + AI Automation lead systems for service businesses.
+# Run and deploy your AI Studio app
 
-Built with React, Vite and Tailwind CSS. Hosted on Netlify: every push to `main` is built and published automatically (settings in `netlify.toml`).
+This contains everything you need to run your app locally.
 
-## Editing content
+View your app in AI Studio: https://ai.studio/apps/drive/16z4jWVHxZMl0a2APv__th-FdFwAoaHAS
 
-- **All website text** (both languages): `content.ts`
-- **Portfolio projects**: `constants.ts` — copy a project block to add a new one
-- **Testimonials**: `components/Testimonials.tsx`
-- **Client logos**: `components/Brands.tsx`
-- **Contact form endpoint** (Formspree): `FORM_ENDPOINT` in `components/Contact.tsx`
+## Run Locally
 
-## Pages
+**Prerequisites:**  Node.js
 
-- Home: `/`
-- Portfolio: `/#/du-an`
 
-## Run locally
-
-```bash
-npm install
-npm run dev
-```
-
-## Build
-
-```bash
-npm run build   # output in dist/
-```
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`

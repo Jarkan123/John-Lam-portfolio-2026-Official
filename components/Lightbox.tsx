@@ -12,6 +12,10 @@ interface LightboxProps {
 const Lightbox: React.FC<LightboxProps> = ({ images, startIndex, onClose }) => {
     const [currentIndex, setCurrentIndex] = useState(startIndex);
 
+    useEffect(() => {
+        window.lucide?.createIcons({ attrs: { 'stroke-width': 1.5 } });
+    }, [currentIndex]);
+
     const goToPrev = useCallback(() => {
         setCurrentIndex(prev => (prev > 0 ? prev - 1 : prev));
     }, []);
